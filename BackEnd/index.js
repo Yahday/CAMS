@@ -9,10 +9,11 @@ app.set('port', process.env.PORT || 3000);
 //MIDDLEWARE
 app.use(express.json());
 
-//ROUTS
+//ROUTES
 app.get('/', (req, res) => {
     res.send('<h1>CAMS</h1>');
 });
+app.use(require('./routes/index'));
 
 //SERVER
 app.listen(app.get('port'), () => {
