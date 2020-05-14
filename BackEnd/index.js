@@ -1,12 +1,27 @@
 const express = require('./node_modules/express');
+const bodyParser = require('body-parser');
 const app = express();
 
+const config = require('./config/config');
 const { mongoose } = require('./database');
 
 //SETTINGS
 app.set('port', process.env.PORT || 3000);
+app.set('llave', config.llave);
 
-//MIDDLEWARE
+
+//CORS - TOKEN
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Authorization, token'
+    );
+    next();
+});
+
+//MIDDLEWARES 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 //ROUTES

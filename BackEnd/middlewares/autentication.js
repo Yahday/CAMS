@@ -1,22 +1,26 @@
+const express = require('express');
 const jwt = require('jsonwebtoken');
-let verificaToken = (req, res, next) => {
-    let token = req.get('token');
+const rutasProtegidas = express.Router();
 
-    jwt.verify(token, process.env.SEED, (err, decoded) => {
+rutasProtegidas.use((req, res, next) => {
+    const token = req.headers['access-token'];
+ 
+    if (token) {
+      jwt.verify(token, app.get('llave'), (err, decoded) => {      
         if (err) {
-            return res.status(401).json({
-                ok: false,
-                err
-            });
+          return res.json({ mensaje: 'Token inválida' });    
+        } else {
+          req.decoded = decoded;    
+          next();
         }
-        req.usuario = decoded.usuario;
-        next();
-    });
-    // return res.status(200).json({
-    //     token: token
-    // });
-}
+      });
+    } else {
+      res.send({ 
+          mensaje: 'Token inexistente' 
+      });
+    }
+ });
 
-module.exports = {
-    verificaToken
-}
+ module.exports = {
+    rutasProtegidas
+} 
