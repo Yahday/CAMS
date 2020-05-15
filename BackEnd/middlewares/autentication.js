@@ -1,6 +1,10 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const config = require('../config/config');
 const rutasProtegidas = express.Router();
+const app = express();
+
+app.set('llave', config.llave);
 
 rutasProtegidas.use((req, res, next) => {
     const token = req.headers['access-token'];
@@ -14,13 +18,12 @@ rutasProtegidas.use((req, res, next) => {
           next();
         }
       });
-    } else {
+    } 
+    else {
       res.send({ 
-          mensaje: 'Token inexistente' 
+        mensaje: 'Token inexistente' 
       });
     }
- });
+});
 
- module.exports = {
-    rutasProtegidas
-} 
+module.exports = {rutasProtegidas};

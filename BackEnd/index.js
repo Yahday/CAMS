@@ -7,7 +7,6 @@ const { mongoose } = require('./database');
 
 //SETTINGS
 app.set('port', process.env.PORT || 3000);
-app.set('llave', config.llave);
 
 
 //CORS - TOKEN
@@ -15,7 +14,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
         'Access-Control-Allow-Headers',
-        'Authorization, token'
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization, token'
+    );
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PATCH, PUT, DELETE, OPTIONS'
     );
     next();
 });
@@ -33,4 +36,4 @@ app.use(require('./routes/index'));
 //SERVER
 app.listen(app.get('port'), () => {
     console.log(`server on port ${app.get('port')}`)
-})
+}) 
