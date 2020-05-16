@@ -6,7 +6,7 @@ const config = require('./config/config');
 const { mongoose } = require('./database');
 
 //SETTINGS
-app.set('port', process.env.PORT || 3000);
+
 
 
 //CORS - TOKEN
@@ -34,6 +34,6 @@ app.get('/', (req, res) => {
 app.use(require('./routes/index'));
 
 //SERVER
-app.listen(app.get('port'), () => {
-    console.log(`server on port ${app.get('port')}`)
+app.listen(process.env.PORT, () => {
+    console.log(`server on port ${process.env.PORT}`)
 }) 

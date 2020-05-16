@@ -1,10 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const config = require('../config/config');
 const jwt = require('jsonwebtoken');
 //MODEL OF BD
 const app = express();
-app.set('llave', config.llave);
 
 app.get('/login', (req, res) => {
     res.send('<h1>LOGIN</h1>'); 
@@ -18,7 +16,7 @@ app.post('/login', (req, res) => {
          check:  true
         };
     //Texto para test= FIN    
-        const token = jwt.sign(payload, app.get('llave'), {
+        const token = jwt.sign(payload, process.env.SEED, {
             expiresIn: 1440
         });
 
