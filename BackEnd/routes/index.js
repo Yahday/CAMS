@@ -1,7 +1,7 @@
-const express = require('express');
-const app = express();
+const { Router } = require('express');
+const router = Router();
 
-app.use(require('./login'));
-app.use(require('./start'));
+router.use(require('./login'));
+router.use(require('./start'));
 
-module.exports = app;
+module.exports = router;
