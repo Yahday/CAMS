@@ -9,6 +9,7 @@ app.get('/login', (req, res) => {
     res.send('<h1>LOGIN</h1>');
 });
 
+//ruta
 app.post('/login', async(req, res) => {
 
     const { email, password } = req.body;
