@@ -19,7 +19,11 @@ let userSchema = new Schema({
     },
     alias: {
         type: String,
-        required: [true, 'Por favor ingresa el alias']
+        required: [false, 'Por favor ingresa el alias']
+    },
+    telefono: {
+        type: Number,
+        required: [true, 'Por favor ingresa el telefono']
     },
     expediente: {
         type: String,
