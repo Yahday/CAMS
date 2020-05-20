@@ -9,16 +9,15 @@ app.get('/login', (req, res) => {
     res.send('<h1>LOGIN</h1>'); 
 });
 
-app.post('/login', (req, res) => { //async para db
+app.post('/login', async (req, res) => {
 
-    /*falta busqueda en la bd para comprobar usuario y contraseña
     const { email, password } = req.body;
-    const user = await User.findOne({email: email});*/
-    if (req.body.email !== "Yahday") return res.status(401).send("User do not exist");//(!user)
-    if (req.body.password !== "Awad") return res.status(401).send("Wrong Password");//(user.password !== password)
+    const user = await User.findOne({email: email});
+    if (!user) return res.status(401).send("User do not exist");
+    if (user.password !== password) return res.status(401).send("Wrong Password");
     const payload = {
         check:  true,
-        userId: req.body._id //user._id
+        userId: user._id
        };
     const token = jwt.sign(payload, process.env.SEED, {
         expiresIn: 1440
