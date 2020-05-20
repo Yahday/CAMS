@@ -1,6 +1,7 @@
 const express = require('./node_modules/express');
 const bodyParser = require('body-parser');
 const app = express();
+const cors = require('cors');
 
 const config = require('./config/config');
 const { mongoose } = require('./database');
@@ -10,6 +11,7 @@ const { mongoose } = require('./database');
 
 
 //CORS - TOKEN
+app.use(cors());
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -31,7 +33,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('<h1>CAMS</h1>');
 });
-app.use(require('./routes/index'));
+app.use('/api', require('./routes/index'));
 
 //SERVER
 app.listen(process.env.PORT, () => {
