@@ -8,11 +8,6 @@ let actorSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa el nombre del usuario']
     },
-    email: {
-        type: String,
-        unique: true,
-        required: [true, 'Por favor ingresa el email']
-    },
     activities: [{
         name: {
             type: String,
