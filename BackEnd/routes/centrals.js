@@ -28,19 +28,12 @@ app.post('/central', (req, res) => {
     let central = new Central({
         name: body.name,
         alias: body.alias,
-        neighborhood: body.neighborhood,
-        between_streets: body.between_streets,
-        street: body.street,
-        outdoor_number: body.outdoor_number,
-        interior_number: body.interior_number,
+        siglas: body.siglas,
+        direccion: body.direccion,
         latitud: body.latitud,
-        cp: body.cp,
         longitud: body.longitud,
         criticity: body.criticity,
-        class: body.class,
-        acronym: body.acronym,
-        created_at: body.created_at,
-        updated_at: body.updated_at
+
     });
 
     central.save((err, centDB) => {
@@ -59,7 +52,7 @@ app.post('/central', (req, res) => {
 
 app.put('/central/:id', (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['name', 'alias', 'neighborhood', 'between_streets', 'street', 'outdoor_number', 'interior_number', 'latitud', ' cp', 'longitud', 'criticity', 'class', 'acronym', 'created_at', 'updated_at']);
+    let body = _.pick(req.body, ['name', 'alias', 'siglas', 'direccion', 'latitud', 'longitud', 'criticity']);
     Central.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, centDB) => {
         if (err) {
             return res.status(400).json({

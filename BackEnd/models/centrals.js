@@ -12,33 +12,17 @@ let centralSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa el alias']
     },
-    neighborhood: {
+    siglas: {
         type: String,
-        required: [true, 'Por favor ingresa neighborhood']
+        required: [true, 'Por favor ingresa las siglas']
     },
-    between_streets: {
+    direccion: {
         type: String,
-        required: [true, 'Por favor ingresa el between_streets']
-    },
-    street: {
-        type: String,
-        required: [true, 'Por favor ingresa street']
-    },
-    outdoor_number: {
-        type: String,
-        required: [true, 'Por favor ingresa outdoor_number']
-    },
-    interior_number: {
-        type: String,
-        required: [true, 'Por favor ingresa interior_number']
+        required: [true, 'Por favor ingresa la direccion']
     },
     latitud: {
         type: String,
         required: [true, 'Por favor ingresa latitud']
-    },
-    cp: {
-        type: String,
-        required: [true, 'Por favor ingresa cp']
     },
     longitud: {
         type: String,
@@ -48,23 +32,6 @@ let centralSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa criticity']
     },
-    class: {
-        type: String,
-            required: [true, 'Por favor ingresa class']
-    },
-    acronym: {
-        type: String,
-        required: [true, 'Por favor ingresa acronym']
-    },
-    created_at: {
-        type: String,
-        required: [true, 'Por favor ingresa created_at']
-    },
-    updated_at: {
-        type: String,
-        required: [true, 'Por favor ingresa updated_at']
-    },
-
     estado: {
         type: Boolean,
         default: true
