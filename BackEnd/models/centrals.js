@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const autoIncrement = require('mongoose-auto-increment');
+
+autoIncrement.initialize(mongoose);
 
 let Schema = mongoose.Schema;
 
@@ -37,6 +40,13 @@ let centralSchema = new Schema({
         default: true
     }
 
+});
+
+centralSchema.plugin(autoIncrement.plugin, {
+    model: '_id',
+    field: '_id',
+    startAt: 1,
+    incrementBy: 1
 });
 
 centralSchema.plugin(uniqueValidator, {
