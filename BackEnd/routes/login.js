@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 
 //MODEL OF BD
 const User = require('../models/users');
+const mail = require('../mail/passrestored')
 
 const app = express();
 
@@ -40,22 +41,27 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
     const parametro = req.body.parametro;
     const valor = req.body.valor;
 
-    if (parametro == 'email') {
+    if (parametro == 'email') { //Con email
         const user = await User.findOne({email: valor});
         if (!user) return res.status(401).send("Invalid Data");
         return res.send(sendAMail(user))
     } 
 
-    if (parametro == 'numEmpleado') {
+    if (parametro == 'numEmpleado') { //Con numero de Empleado
         const user = await User.findOne({expediente: valor});
         if (!user) return res.status(401).send("Invalid Data");
         return res.send(sendAMail(user))
     }
-    return res.send('datos inválidos');
+    return res.send('Invalid Data');
 
+    //Mandar Mail
     async function sendAMail  (user) {
 
-        //Obtener contraseña
+        let oldPass = user.password;//Obtener contraseña y generar nueva
+        oldPass = oldPass.substr(3,8);
+        const newPass = bcrypt.hashSync(oldPass, 10);
+        await User.findByIdAndUpdate(user._id, {password: newPass});
+        console.log(oldPass);
 
         const transporter = nodemailer.createTransport({ //Datos del SMTP 
             host: 'smtp.office365.com',
@@ -69,15 +75,16 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
                 ciphers:'SSLv3'
             }
         });
-    
-        const info = await transporter.sendMail({
+        
+        const emailHTML = mail.mail(user.email, oldPass)
+        const info = await transporter.sendMail({ //Mail
             from: '"CAMS Soporte" <camssoporte@hotmail.com>',
-            to: 'yajday@hotmail.com', //user.email
+            to: user.email,
             subject: 'Recuperar Contraseña',
-            text: user.password
+            html: emailHTML
         });
         console.log(info.messageId)
-        return('Message sent');
+        return 'Message sent';
     }
 })
 
