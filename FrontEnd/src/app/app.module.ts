@@ -2,11 +2,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import {routing , appRoutingProviders} from './app.routing';
-import {RouterModule, Routes}  from '@angular/router';
-
-
-
+import { routing , appRoutingProviders } from './app.routing';
+import { RouterModule, Routes }  from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -14,14 +12,12 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { HeaderComponent } from './components/header/header.component';
 import { CentralesComponent } from './components/centrales/centrales.component';
 import { AgregarCentralesComponent } from './components/agregar-centrales/agregar-centrales.component';
-import {NgbModal,ModalDismissReasons,NgbModule  }  from '@ng-bootstrap/ng-bootstrap';
-import {GoogleMapsModule} from '@angular/google-maps'; 
+import { NgbModal,ModalDismissReasons,NgbModule  }  from '@ng-bootstrap/ng-bootstrap';
+import { GoogleMapsModule } from '@angular/google-maps'; 
 import { CollapseModule, WavesModule } from 'angular-bootstrap-md';
-import {BrowserAnimationsModule}  from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule }  from '@angular/platform-browser/animations';
 
-
-
-import{CommonModule}  from '@angular/common';
+import {CommonModule}  from '@angular/common';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {MatSidenavModule}  from '@angular/material/sidenav';
 import {MatListModule}  from '@angular/material/list';
@@ -40,10 +36,7 @@ import { RecuperacionContrasenaComponent } from './components/login/recuperacion
 import { PantallaAutorizacionComponent } from './components/login/recuperacion-contrasena/pantalla-autorizacion/pantalla-autorizacion.component';
 import { AutorizacionComponent } from './components/login/autorizacion/autorizacion.component';
 
-
-
-
-
+import { AuthGuard } from "./auth.guard";
 
 @NgModule({
   declarations: [
@@ -53,7 +46,7 @@ import { AutorizacionComponent } from './components/login/autorizacion/autorizac
     HeaderComponent,
     CentralesComponent,
     AgregarCentralesComponent,
-   CorrectivosComponent,
+    CorrectivosComponent,
     OtsComponent,
     OrdenesEnProcesoComponent,
     OrdenesCompletadasComponent,
@@ -82,13 +75,12 @@ import { AutorizacionComponent } from './components/login/autorizacion/autorizac
     MatToolbarModule,
     FormsModule,  
     NgSelectModule,  
+    HttpClientModule,
     MDBBootstrapModule.forRoot(),
     LayoutModule
-
-
   ],
-  providers: [ appRoutingProviders  ],
-    bootstrap: [AppComponent]
+  providers: [ AuthGuard ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 
