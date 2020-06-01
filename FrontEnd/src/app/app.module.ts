@@ -4,7 +4,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistroComponent } from './components/registro/registro.component';
