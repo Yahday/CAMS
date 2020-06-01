@@ -2,85 +2,92 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 <header>
 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <a class="navbar-brand" href="#">CAMS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
 
-<nav class="navbar navbar-expand-sm navbar-light bg-white   mr-sm-2  mr-md-2   mr-lg-2  mr-xl-2    d-flex    px-md-0  px-lg-0 px-sm-0   justify-content-center    ">
-    
+          <ul class="navbar-nav mr-auto">
 
-    <img src="./assets/imagen/logo-cams.JPG"  style="width:110px;   "   class="W-auto h-25  mr-auto     "   >
-  
-
-
-    <a class="navbar-brand" href="#"  class="      px-xl-5   px-lg-5 px-md-4     px-sm-3  px-xs-0    "  >Menu</a>
-    
-    <button class="navbar-toggler d-lg-none  ml-auto  px-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse   justify-content-center  " id="collapsibleNavId">
-        <ul class="navbar-nav mr-auto   d-flex        justify-content-center     mt-2 mt-lg-0       ">
             <li class="nav-item active">
-                <a class="nav-link   px-xl-5   px-lg-5  px-md-4     px-sm-2  px-xs-0     " href="#"    >Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link   px-xl-5   px-lg-5  px-md-5     px-sm-2  px-xs-0      " href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle  px-xl-5   px-lg-5 px-md-4  px-sm-2 px-xs-0    " href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu" aria-labelledby="dropdownId">
-                    <a class="dropdown-item" href="#">Action 1</a>
-                    <a class="dropdown-item" href="#">Action 2</a>
+      
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+
+      
+              <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Mantenimiento
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
                 </div>
+              </li>
+              
+
+
+
+            
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['centrales']" [routerLinkActive]="['active']">Centrales</a>
             </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0  mx-sm-0  mx-md-0 mx-lg-0         ">
+          
             
-            <button class="btn btn-secondary          my-2 my-sm-0  mx-2          "  (click)="authService.logOut()">log out</button>
-            
-            <div class="form-group  mx-xs-0    ">
-                <label for=""></label>
-                <select class="form-control     " name="buscador"        aria-placeholder="buscador"  id="">
-                  <option>buscador</option>
-                  <option>dsdsdsdsdsd</option>
-                  <option>dsdsdsdsds</option>
-                </select>
-              </div>
-  
-
-        </form>
-    </div>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['correctivos']" [routerLinkActive]="['active']">Correctivos</a>
+            </li>
 
 
 
-</nav>
+                    </ul>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+      </nav>
 
 
 
 
 
 </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

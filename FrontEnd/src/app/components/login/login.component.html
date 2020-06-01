@@ -4,16 +4,16 @@
 
 <div           class="mx-sm-4 mx-md-4     mx-lg-5  mx-xl-5  px-xl-5  d-flex    justify-content-center  "  >
 <!-- Default form login -->
-<form        class="text-center   border border-light p-5   mx-4        "     (submit)="logIn()"   style="width: 350px; margin-top: 25px;  "     >
+<form        class="text-center   border border-light p-5   mx-4        "     action="#!"   style="width: 350px; margin-top: 25px;  "     >
 
 <div class="form-group "  >
 
 <img src="./assets/imagen/logo-cams.JPG"  style="margin-bottom: 40PX; margin-top: -20PX; width: 190PX;       "           >
     <!-- Email -->
-    <input type="email" [(ngModel)]="user.email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="@ Correo electronico" required autofocus>
+    <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="@ Correo electronico">
 
     <!-- Password -->
-    <input type="password" [(ngModel)]="user.password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Contraseña" required>
+    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Contraseña">
 
     <div class="d-flex justify-content-around">
         <div>
