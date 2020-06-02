@@ -1,49 +1,42 @@
-
-
-
-
-<div           class="mx-sm-4 mx-md-4     mx-lg-5  mx-xl-5  px-xl-5  d-flex    justify-content-center  "  >
+<div class="mx-sm-4 mx-md-4 mx-lg-5 mx-xl-5 px-xl-5 d-flex justify-content-center">
 <!-- Default form login -->
-<form        class="text-center   border border-light p-5   mx-4        "     (submit)="logIn()"   style="width: 350px; margin-top: 25px;  "     >
+    <form class="text-center   border border-light p-5   mx-4" (submit)="logIn()" style="width: 350px; margin-top: 25px;">
 
-<div class="form-group "  >
+        <div class="form-group">
 
-<img src="./assets/imagen/logo-cams.JPG"  style="margin-bottom: 40PX; margin-top: -20PX; width: 190PX;       "           >
-    <!-- Email -->
-    <input type="email" [(ngModel)]="user.email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="@ Correo electronico" required autofocus>
+            <img src="./assets/imagen/logo-cams.JPG"  style="margin-bottom: 40PX; margin-top: -20PX; width: 190PX;">
+            <!-- Email -->
+            <input type="email" [(ngModel)]="user.email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Correo electronico" required autofocus>
 
-    <!-- Password -->
-    <input type="password" [(ngModel)]="user.password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Contraseña" required>
-
-    <div class="d-flex justify-content-around">
-        <div>
-            <!-- Remember me -->
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                <label class="custom-control-label justify-content-left     "     for="defaultLoginFormRemember">Recordarme</label>
+            <!-- Password -->
+            <input type="password" [(ngModel)]="user.password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Contraseña" required>
+            <div class="d-flex justify-content-around">
+                <div>
+                    <!-- Remember me -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                        <label class="custom-control-label justify-content-left" for="defaultLoginFormRemember">Recordarme</label>
+                    </div>
+                </div>   
             </div>
+
+            <!-- Sign in button -->
+            <button class="btn btn-info btn-block my-4" type="submit">Entrar</button>
+
+
+            <div class="mb-3"  >
+                <!-- Forgot password -->
+                <a    class=""    href="">Olvide mi contraseña?</a>
+            </div>
+
+            <!-- Register 
+            <p>
+                <a class="mt-5" href="">Registrarse</a>
+            </p>-->
+
         </div>
-        
-    </div>
 
-    <!-- Sign in button -->
-    <button class="btn btn-info btn-block my-4" type="submit">Entrar</button>
-
-
-    <div class="mb-3"  >
-        <!-- Forgot password -->
-        <a    class=""    href="">Olvide mi contraseña?</a>
-    </div>
-
-    <!-- Register 
-    <p>
-        <a   class="mt-5"   href="">Registrarse</a>
-    </p>
--->
-    <!-- Social login -->
-</div>
-
-</form>
+    </form>
 <!-- Default form login -->
 </div>
 
