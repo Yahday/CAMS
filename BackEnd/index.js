@@ -26,8 +26,8 @@ app.use((req, res, next) => {
 });
 
 //MIDDLEWARES 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+app.use(express.json({ limit: '5mb' }));
 
 //ROUTES
 app.get('/', (req, res) => {
@@ -38,4 +38,4 @@ app.use('/api', require('./routes/index'));
 //SERVER
 app.listen(process.env.PORT, () => {
     console.log(`server on port ${process.env.PORT}`)
-}) 
+})
