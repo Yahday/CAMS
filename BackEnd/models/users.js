@@ -8,6 +8,18 @@ let userSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa el nombre del usuario']
     },
+    alias: {
+        type: String,
+        required: [false, 'Por favor ingresa el alias']
+    },
+    expediente: {
+        type: Number,
+        required: [true, 'Por favor ingresa el número de expediente']
+    },
+    telefono: {
+        type: Number,
+        required: [true, 'Por favor ingresa el telefono']
+    },
     email: {
         type: String,
         unique: true,
@@ -17,28 +29,30 @@ let userSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa la contraseña']
     },
-    alias: {
+    avatar: {
         type: String,
-        required: [false, 'Por favor ingresa el alias']
     },
-    telefono: {
-        type: Number,
-        required: [true, 'Por favor ingresa el telefono']
-    },
-    expediente: {
-        type: String,
-        required: [true, 'Por favor ingresa el expediente']
-    },
-    // id_actor: {
-    //     type: Schema.Types.String,
-    //     ref: 'Actors',
-    //     required: [true, 'Ingresar el id del actor']
-    // },
-    estado: {
+    Status: {
         type: Boolean,
         default: true
-    }
-
+    },
+    Actors: [{
+        id_actor: {
+            type: Schema.Types.ObjectId,
+            ref: 'Actor',
+        }
+    }],
+    Permisos: [{
+            id_permiso: {
+                type: Schema.Types.ObjectId,
+                ref: 'Permisos',
+            }
+        }]
+        // id_actor: {
+        //     type: Schema.Types.String,
+        //     ref: 'Actors',
+        //     required: [true, 'Ingresar el id del actor']
+        // },
 });
 
 userSchema.plugin(uniqueValidator, {
