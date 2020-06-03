@@ -76,7 +76,7 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
             }
         });
         
-        const emailHTML = mail.mail(user.email, oldPass)
+        const emailHTML = mail.mail(user.name, oldPass)
         const info = await transporter.sendMail({ //Mail
             from: '"CAMS Soporte" <camssoporte@hotmail.com>',
             to: user.email,

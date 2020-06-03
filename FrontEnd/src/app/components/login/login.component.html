@@ -1,4 +1,4 @@
-<div class="mx-sm-4 mx-md-4 mx-lg-5 mx-xl-5 px-xl-5 d-flex justify-content-center">
+<div class="mx-sm-4 mx-md-4 mx-lg-5 mx-xl-5 px-xl-5 d-flex justify-content-center"> 
 <!-- Default form login -->
     <form class="text-center   border border-light p-5   mx-4" (submit)="logIn()" style="width: 350px; margin-top: 25px;">
 
@@ -23,10 +23,9 @@
             <!-- Sign in button -->
             <button class="btn btn-info btn-block my-4" type="submit">Entrar</button>
 
-
+            <!-- Forgot password -->
             <div class="mb-3"  >
-                <!-- Forgot password -->
-                <a    class=""    href="">Olvide mi contraseña?</a>
+                <a [routerLink]="['/login/forgot']" [routerLinkActive]="['active']">Olvide mi contraseña</a>
             </div>
 
             <!-- Register 

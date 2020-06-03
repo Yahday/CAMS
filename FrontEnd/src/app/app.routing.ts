@@ -21,19 +21,19 @@ import { AuthGuard } from "./auth.guard";
 // Array de rutas
 const appRoutes: Routes = [
 
-{path: '', redirectTo: '/start', pathMatch: 'full'},
-{path: 'start', component: StartComponent, canActivate: [AuthGuard] },    
-{path: 'centrales' , component : CentralesComponent   },
-{path: 'header' ,  component :   HeaderComponent}   ,
-{path: 'registro' ,  component :   RegistroComponent}   ,
-{path: 'login' ,  component :   LoginComponent},   
-{path: 'correctivos' ,  component :   CorrectivosComponent},   
-{path: 'ots' ,  component :   OtsComponent},   
-{path: 'ordenes-completadas' ,  component :   OrdenesCompletadasComponent} ,  
-{path: 'ordenes-en-proceso' ,  component :   OrdenesEnProcesoComponent}   ,
-{path: 'recuperacion-contrasena' ,  component :   RecuperacionContrasenaComponent} ,  
-{path: 'pantalla-autorizacion' ,  component :   PantallaAutorizacionComponent},   
-{path: 'autorizacion' ,  component :   AutorizacionComponent}   
+    {path: '', redirectTo: '/start', pathMatch: 'full'},
+    {path: 'start', component: StartComponent, canActivate: [AuthGuard] },    
+    {path: 'centrales' , component : CentralesComponent   },
+    {path: 'header' ,  component :   HeaderComponent}   ,
+    {path: 'registro' ,  component :   RegistroComponent}   ,
+    {path: 'login' ,  component :   LoginComponent},   
+    {path: 'correctivos' ,  component :   CorrectivosComponent},   
+    {path: 'ots' ,  component :   OtsComponent},   
+    {path: 'ordenes-completadas' ,  component :   OrdenesCompletadasComponent} ,  
+    {path: 'ordenes-en-proceso' ,  component :   OrdenesEnProcesoComponent}   ,
+    {path: 'login/forgot' ,  component :   RecuperacionContrasenaComponent} ,  
+    {path: 'pantalla-autorizacion' ,  component :   PantallaAutorizacionComponent},   
+    {path: 'autorizacion' ,  component :   AutorizacionComponent}   
 
 ];
 
