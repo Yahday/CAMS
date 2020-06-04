@@ -10,57 +10,58 @@ const mail = require('../mail/passrestored')
 const app = express();
 
 app.get('/login', (req, res) => {
-    res.send('<h1>LOGIN</h1>'); 
+    res.send('<h1>LOGIN</h1>');
 });
 
-app.post('/login', async (req, res) => {
+app.post('/login', async(req, res) => {
 
     const { email, password } = req.body;
-    const user = await User.findOne({email: email});
+    const user = await User.findOne({ email: email });
     if (!user) return res.status(401).send("User do not exist");
     if (!bcrypt.compareSync(password, user.password)) {
-        return res.status(401).send("Wrong Password");}
+        return res.status(401).send("Wrong Password");
+    }
 
     const payload = { //Para guardar ID de usuario
-        check:  true,
+        check: true,
         userId: user._id
-       };
+    };
 
-    const token = jwt.sign(payload, process.env.SEED, { 
+    const token = jwt.sign(payload, process.env.SEED, {
         expiresIn: 1440
     });
 
     res.json({
-     mensaje: 'Autenticación correcta',
-     token: token,
-     _id: payload.userId
+        mensaje: 'Autenticación correcta',
+        token: token,
+        _id: payload.userId
     });
 });
 
-app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
+app.post('/login/forgot', async(req, res) => { //Recuperar contraseña
     const parametro = req.body.parametro;
     const valor = req.body.valor;
 
     if (parametro == 'email') { //Con email
-        const user = await User.findOne({email: valor});
+        const user = await User.findOne({ email: valor });
         if (!user) return res.status(401).send("Invalid Data");
         return res.send(sendAMail(user))
-    } 
+    }
 
     if (parametro == 'numEmpleado') { //Con numero de Empleado
-        const user = await User.findOne({expediente: valor});
+        const user = await User.findOne({ expediente: valor });
         if (!user) return res.status(401).send("Invalid Data");
         return res.send(sendAMail(user))
     }
     return res.send('Invalid Data');
 
     //Mandar Mail
-    async function sendAMail  (user) {
+    async function sendAMail(user) {
 
-        let oldPass = user.password;//Obtener contraseña y generar nueva
-        oldPass = oldPass.substr(3,8);
+        let oldPass = user.password; //Obtener contraseña y generar nueva
+        oldPass = oldPass.substr(3, 8);
         const newPass = bcrypt.hashSync(oldPass, 10);
-        await User.findByIdAndUpdate(user._id, {password: newPass});
+        await User.findByIdAndUpdate(user._id, { password: newPass });
         console.log(oldPass);
 
         const transporter = nodemailer.createTransport({ //Datos del SMTP 
@@ -71,11 +72,11 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
                 user: 'camssoporte@hotmail.com',
                 pass: 'SSTelmex02'
             },
-            tls : {
-                ciphers:'SSLv3'
+            tls: {
+                ciphers: 'SSLv3'
             }
         });
-        
+
         const emailHTML = mail.mail(user.name, oldPass)
         const info = await transporter.sendMail({ //Mail
             from: '"CAMS Soporte" <camssoporte@hotmail.com>',
