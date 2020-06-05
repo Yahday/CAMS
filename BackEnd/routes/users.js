@@ -6,7 +6,7 @@ const app = express();
 
 app.get('/user', (req, res) => {
 
-    User.find({ estado: true })
+    User.find({ Status: true })
         //.populate('id_actor')
         .exec((err, users) => {
             if (err) {
@@ -28,11 +28,12 @@ app.post('/user', (req, res) => {
     let body = req.body;
     let user = new User({
         name: body.name,
+        alias: body.alias,
+        expediente: body.expediente,
+        telefono: body.telefono,
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
-        telefono: body.telefono,
-        expediente: body.expediente,
-        estado: body.estado
+        Status: body.Status
     });
 
     user.save((err, usrDB) => {
@@ -52,7 +53,7 @@ app.post('/user', (req, res) => {
 
 app.put('/user/:id', (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['name', 'email', 'password', 'telefono', 'expediente', 'estado']);
+    let body = _.pick(req.body, ['name', 'alias', 'expediente', 'telefono', 'email', 'password', 'Status']);
     User.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
         if (err) {
             return res.status(400).json({
@@ -70,7 +71,7 @@ app.put('/user/:id', (req, res) => {
 
 app.delete('/user/:id', (req, res) => {
     let id = req.params.id;
-    User.findByIdAndUpdate(id, { estado: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
+    User.findByIdAndUpdate(id, { Status: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
         if (err) {
             return res.status(400).json({
                 ok: false,

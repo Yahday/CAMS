@@ -1,7 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const rutasProtegidas = express.Router();
-const app = express();
 
 
 rutasProtegidas.use((req, res, next) => {

@@ -3,11 +3,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 
+//SETTINGS
 const config = require('./config/config');
 const { mongoose } = require('./database');
-
-//SETTINGS
-
 
 
 //CORS - TOKEN
@@ -33,7 +31,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('<h1>CAMS</h1>');
 });
-app.use('/api', require('./routes/index'));
+app.use('/api', require('./routes/index.routes'));
 
 //SERVER
 app.listen(process.env.PORT, () => {
