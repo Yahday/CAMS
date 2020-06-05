@@ -9,28 +9,20 @@ let Schema = mongoose.Schema;
 let actorSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'Por favor ingresa el nombre del usuario']
+        required: [true, 'Por favor ingresa el nombre del actor']
     },
     activities: [{
-        name: {
-            type: String,
-            required: [true, 'Por favor ingresa el nombre de la actividad']
-        },
-        created_at: {
-            type: String,
-            required: [true, 'Por favor ingresa el campo vacio']
-        },
-        updated_at: {
-            type: String,
-            required: [true, 'Por favor ingresa el campo vacio']
-        }
-
+        type: Schema.Types.ObjectId, 
+        ref: 'Activities'
     }],
+    id_centralMantenimiento: {
+        type: Schema.Types.ObjectId, 
+        ref: 'CentroMantenimiento'
+    },
     estado: {
         type: Boolean,
         default: true
     }
-
 });
 
 actorSchema.plugin(autoIncrement.plugin, {
@@ -45,4 +37,4 @@ actorSchema.plugin(uniqueValidator, {
 });
 
 
-module.exports = mongoose.model('Actor', actorSchema);
+module.exports = mongoose.model('Actors', actorSchema);

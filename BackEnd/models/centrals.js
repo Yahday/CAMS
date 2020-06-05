@@ -9,7 +9,7 @@ let Schema = mongoose.Schema;
 let centralSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'Por favor ingresa el nombre del usuario']
+        required: [true, 'Por favor ingresa el nombre de la central']
     },
     alias: {
         type: String,
