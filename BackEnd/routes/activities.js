@@ -134,28 +134,41 @@ ActivityCtrl.addTask = async (req, res) => { //Agregar una Tarea
         })
 };
 
-/*ActivityCtrl.editTask = async (req, res) => {             //Editar Tarea
-    const id = req.params.task;
+ActivityCtrl.editTask = async (req, res) => {      //Editar Tarea
+    const id = req.params.id;
     const name = req.body.name;
     const criticity = req.body.criticity;
-    const editedTask =  await Activities.findById(id)
-        exec(async (err) => {
-            await editedTask.update({'tasks.name': name}, {$set: {
-                name: name,
-                'items.$.value': 'two updated'
-            }})
+        await Activities.aggregate([
+            {$project: 
+                {"tasks": {
+                    $filter: {
+                        input: "$tasks",
+                        as: "task",
+                        cond: { 
+                            $eq: [ "$$task.name", name ]
+                        }
+                    }
+                }} 
+            }
+        ])
+        .exec((err, task) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            } else {
+            return res.status(200).json({
+                ok: true,
+                task
+            })}
         })
-    
-    return res.status(200).json({
-        ok: true,
-        message: `Actividad ${name} actualizada`
-    })
-};*/
+};
 
-ActivityCtrl.deleteTask = async (req, res) => { //Eliminar Tarea NO FUNCIONA
+ActivityCtrl.deleteTask = async (req, res) => { //Eliminar Tarea
     const id = req.params.id;
     const task = req.params.task
-    await Activities.findByIdAndUpdate(id, {$pull: {$in: {tasks: task} }}, (err) => {
+    await Activities.findByIdAndUpdate(id, {$pull: {tasks: {name: task}} }, (err) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -181,7 +194,7 @@ router.delete('/activities/:id', ActivityCtrl.deleteActivity);//Eliminar Activid
 router.get('/activities/:id/tasks', ActivityCtrl.getTasks);//Ver Tareas de una Actividad
 router.post('/activities/:id/tasks', ActivityCtrl.addTask);//Nueva Tarea
 
-//router.put('/activities/:id/tasks/:task', ActivityCtrl.editTask);//Editar Tarea
+router.get('/activities/:id/tasks/:task', ActivityCtrl.editTask);//Editar Tarea
 router.delete('/activities/:id/tasks/:task', ActivityCtrl.deleteTask);//Eliminar Tarea
 
 module.exports = router;
