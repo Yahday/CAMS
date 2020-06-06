@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 //const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
-
+//HALLAZGOS COLLECTION
 autoIncrement.initialize(mongoose);
 
 let Schema = mongoose.Schema;
