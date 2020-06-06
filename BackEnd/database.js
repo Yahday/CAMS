@@ -8,7 +8,7 @@ mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useCrea
 
 mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
-    .then(db => console.log('Mongodb is connected'))
+.then(db => console.log('Mongodb is connected'))
     .catch(err => console.error(err));
 
 module.exports = mongoose;
