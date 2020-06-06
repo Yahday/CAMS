@@ -1,49 +1,82 @@
-const mongoose = require('mongoose');
-//const uniqueValidator = require('mongoose-unique-validator');
-const autoIncrement = require('mongoose-auto-increment');
+const express = require('express');
+const bcrypt = require('bcrypt');
+const _ = require('underscore');
+const Hallazgo = require('../models/hallazgos');
+const app = express();
 
-autoIncrement.initialize(mongoose);
+app.get('/hallazgo', (req, res) => {
 
-let Schema = mongoose.Schema;
-
-let hallazgoSchema = new Schema({
-    Fecha: {
-        type: Date,
-        required: true
-    },
-    Folio: {
-        type: String,
-        required: true
-    },
-    CentroManto: {
-        type: String,
-        required: true
-    },
-    codigoActor: {
-        type: Schema.Types.String,
-        ref: 'Actor',
-        required: true
-    },
-    // gerencia: {
-    //     type: String,
-    //     required: [true, 'Por favor ingresa la gerencia']
-    // },
-    estado: {
-        type: Boolean,
-        default: true
-    }
-
+    Hallazgo.find({ estado: true })
+        .exec((err, hallazgos) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            console.log(req.hallazgo);
+            return res.status(200).json({
+                ok: true,
+                count: hallazgos.length,
+                hallazgos
+            });
+        });
 });
 
-// cmSchema.plugin(autoIncrement.plugin, {
-//     model: '_id',
-//     field: '_id',
-//     startAt: 1,
-//     incrementBy: 1
-// });
+app.post('/hallazgo', (req, res) => {
+    let body = req.body;
+    let hallazgo = new Hallazgo({
 
-hallazgoSchema.plugin(uniqueValidator, {
-    message: '{PATH} Debe ser único y diferente'
+        criticity: body.criticity,
+
+    });
+
+    hallazgo.save((err, haDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        return res.status(200).json({
+            ok: true,
+            haDB
+        });
+    });
 });
 
-module.exports = mongoose.model('Hallazgo', hallazgoSchema);
+app.put('/hallazgo/:id', (req, res) => {
+    let id = req.params.id;
+    let body = _.pick(req.body, ['', '', '', '', '', '', 'criticity']);
+    Hallazgo.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, haDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        return res.status(200).json({
+            ok: true,
+            haDB
+        });
+
+    });
+});
+
+app.delete('/hallazgo/:id', (req, res) => {
+    let id = req.params.id;
+    Hallazgo.findByIdAndUpdate(id, { estado: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        return res.status(200).json({
+            ok: true,
+            resp
+        });
+    });
+});
+
+module.exports = app;

@@ -24,7 +24,7 @@ let cmSchema = new Schema({
     },
     codigoActor: {
         type: Schema.Types.String,
-        ref: 'Actor',
+        ref: 'Actors',
         required: [true, 'Ingresar el id del actor']
     },
     // gerencia: {
