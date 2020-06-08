@@ -16,10 +16,6 @@ let areaSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: Activities
     }],
-    id_centralMantenimiento: {
-        type: Schema.Types.ObjectId, 
-        ref: 'CentroMantenimiento'
-    },
     Status: {
         type: Boolean,
         default: true
