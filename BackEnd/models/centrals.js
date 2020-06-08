@@ -35,6 +35,9 @@ let centralSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa criticity']
     },
+
+
+    //campo para definir status en la bd
     estado: {
         type: Boolean,
         default: true
@@ -42,6 +45,7 @@ let centralSchema = new Schema({
 
 });
 
+//crea el id autoincrementable 
 centralSchema.plugin(autoIncrement.plugin, {
     model: '_id',
     field: '_id',

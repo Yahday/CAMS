@@ -29,7 +29,7 @@ app.post('/cm', (req, res) => {
 app.get('/cm', (req, res) => {
     CM.find({ estado: true })
         .populate('codigoCentral')
-        .populate('codigoActor')
+        .populate('codigoArea')
         .exec((err, cms) => {
             if (err) {
                 return res.status(400).json({

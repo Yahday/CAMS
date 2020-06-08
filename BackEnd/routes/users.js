@@ -8,7 +8,7 @@ const fs = require('fs');
 app.get('/user', (req, res) => {
 
     User.find({ Status: true })
-        //.populate('id_actor')
+        //.populate('codigoArea')
         .exec((err, users) => {
             if (err) {
                 return res.status(400).json({
