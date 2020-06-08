@@ -119,7 +119,7 @@ AreaCtrl.getActivities = async (req, res) => { //Ver Actividades de un Area
 AreaCtrl.addActivity = async (req, res) => { //Agregar Actividad
     const id = req.params.id;
     const name = req.body.name;
-    await Activities.findOne({name: name})
+    await Activities.findOne({name: name}) //Busca la Actividad que se va a agregar al Area
         .exec(async (err, actividad) => {
             console.log(actividad);
             if (err) {
@@ -128,8 +128,8 @@ AreaCtrl.addActivity = async (req, res) => { //Agregar Actividad
                     err
                 });
             } else {
-                await Areas.findByIdAndUpdate(id, {$push: {activities: actividad}});
-                return res.status(200).json({
+                await Areas.findByIdAndUpdate(id, {$push: {activities: actividad}}); //Agrega la Actividad buscada en el 
+                return res.status(200).json({                                        //Array de Actividades del Area
                     ok: true,
                     message: `Actividad ${name} agregada`
                 })
@@ -138,9 +138,9 @@ AreaCtrl.addActivity = async (req, res) => { //Agregar Actividad
 };
 
 AreaCtrl.deleteActivity = async (req, res) => { //Quitar Actividad
-    const id = req.params.activity;
-    const id_act = req.params.id;
-    Areas.findByIdAndUpdate(id_act, {$pull: {activities: id}})
+    const id = req.params.activity; //Id de la Actividad a Quitar del Area
+    const id_area = req.params.id; //Id del Area a modificar
+    Areas.findByIdAndUpdate(id_area, {$pull: {activities: id}}) //Quita la Actividad del Area
         .exec((err) => {
             if (err) {
                 return res.status(400).json({
