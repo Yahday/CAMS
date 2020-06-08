@@ -39,30 +39,31 @@ app.post('/login', async(req, res) => {
 });
 
 app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
+
     const parametro = req.body.parametro;
     const valor = req.body.valor;
 
     if (parametro == 'email') { //Con email
+
+        const user = await User.findOne({ email: valor });
+        if (!user) return res.status(401).send("Invalid Data");
+        return res.send(sendAMail(user))
+    }
+
+    if (parametro == 'numEmpleado') { //Con numero de Empleado
+        const user = await User.findOne({ expediente: valor });
+
         const user = await User.findOne({email: valor});
         if (!user) return res.status(401).send("Invalid Data");
         return res.send(sendAMail(user))
     } 
 
-    if (parametro == 'numEmpleado') { //Con numero de Empleado
-        const user = await User.findOne({expediente: valor});
-        if (!user) return res.status(401).send("Invalid Data");
-        return res.send(sendAMail(user))
-    }
-    return res.send('Invalid Data');
-
     //Mandar Mail
     async function sendAMail  (user) {
-
         let oldPass = user.password;//Obtener contraseña y generar nueva
         oldPass = oldPass.substr(3,8);
         const newPass = bcrypt.hashSync(oldPass, 10);
         await User.findByIdAndUpdate(user._id, {password: newPass});
-        console.log(oldPass);
 
         const transporter = nodemailer.createTransport({ //Datos del SMTP 
             host: 'smtp.office365.com',
@@ -72,11 +73,11 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
                 user: 'camssoporte@hotmail.com',
                 pass: 'SSTelmex02'
             },
-            tls : {
-                ciphers:'SSLv3'
+            tls: {
+                ciphers: 'SSLv3'
             }
         });
-        
+
         const emailHTML = mail.mail(user.name, oldPass)
         const info = await transporter.sendMail({ //Mail
             from: '"CAMS Soporte" <camssoporte@hotmail.com>',
