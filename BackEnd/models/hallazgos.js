@@ -22,7 +22,7 @@ let hallazgoSchema = new Schema({
     },
     area: {
         type: Schema.Types.String,
-        ref: 'Actors',
+        ref: 'Area',
     },
     Activities: [{
         activity: {
@@ -65,6 +65,8 @@ let hallazgoSchema = new Schema({
         type: String,
     },
 
+
+    //campo para definir status en la bd
     estado: {
         type: Boolean,
         default: true
@@ -73,7 +75,7 @@ let hallazgoSchema = new Schema({
 });
 
 
-
+//crea el id autoincrementable 
 hallazgoSchema.plugin(autoIncrement.plugin, {
     model: '_id',
     field: '_id',

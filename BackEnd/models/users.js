@@ -36,10 +36,10 @@ let userSchema = new Schema({
         type: Boolean,
         default: true
     },
-    Actors: [{
-        id_actor: {
+    area: [{
+        codigoArea: {
             type: Schema.Types.ObjectId,
-            ref: 'Actor',
+            ref: 'Area',
         }
     }],
     Permisos: [{
