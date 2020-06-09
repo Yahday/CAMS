@@ -37,6 +37,7 @@ import { PantallaAutorizacionComponent } from './components/login/recuperacion-c
 import { AutorizacionComponent } from './components/login/autorizacion/autorizacion.component';
 
 import { AuthGuard } from "./auth.guard";
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AuthGuard } from "./auth.guard";
     RecuperacionContrasenaComponent,
     PantallaAutorizacionComponent,
     AutorizacionComponent,
+    NotFoundComponent,
   
   ],
   imports: [

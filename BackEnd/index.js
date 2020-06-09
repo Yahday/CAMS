@@ -33,6 +33,12 @@ app.get('/', (req, res) => {
 });
 app.use('/api', require('./routes/index.routes'));
 
+app.get('*', function(req, res) { //Error 404
+    res.status(404).json({
+        message: 'Ruta no existe'
+    });
+});
+
 //SERVER
 app.listen(process.env.PORT, () => {
     console.log(`server on port ${process.env.PORT}`)

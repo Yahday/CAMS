@@ -46,15 +46,13 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
     if (parametro == 'email') { //Con email
 
         const user = await User.findOne({ email: valor });
-        if (!user) return res.status(401).send("Invalid Data");
+        if (!user) return res.status(400).send("Invalid Data");
         return res.send(sendAMail(user))
     }
 
     if (parametro == 'numEmpleado') { //Con numero de Empleado
         const user = await User.findOne({ expediente: valor });
-
-        const user = await User.findOne({email: valor});
-        if (!user) return res.status(401).send("Invalid Data");
+        if (!user) return res.status(400).send("Invalid Data");
         return res.send(sendAMail(user))
     } 
 

@@ -7,7 +7,4 @@ router.use(require('./users'));
 router.use(require('./area'));
 router.use(require('./activities'));
 
-
-
-
 module.exports = router;
