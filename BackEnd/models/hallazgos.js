@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 //const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
-//HALLAZGOS COLLECTION
+
 autoIncrement.initialize(mongoose);
 
 let Schema = mongoose.Schema;
@@ -39,6 +39,7 @@ let hallazgoSchema = new Schema({
         },
         status: {
             type: Boolean,
+            default: false
         }
     }],
     criticity: {
@@ -62,7 +63,7 @@ let hallazgoSchema = new Schema({
         }
     }],
     status: {
-        type: String,
+        type: String
     },
 
 
