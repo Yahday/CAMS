@@ -9,6 +9,7 @@ app.get('/user', (req, res) => {
 
     User.find({ Status: true })
         //.populate('codigoArea')
+        //.pupulate('codigoCM')
         .exec((err, users) => {
             if (err) {
                 return res.status(400).json({
