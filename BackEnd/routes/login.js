@@ -24,7 +24,7 @@ app.post('/login', async(req, res) => {
 
     const payload = { //Para guardar ID de usuario
         check: true,
-        userId: user._id
+        userId: user
     };
 
     const token = jwt.sign(payload, process.env.SEED, {
