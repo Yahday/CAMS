@@ -19,6 +19,14 @@ let centralSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa las siglas']
     },
+    tipoCentral: {
+        type: String,
+        required: [true, 'Por favor ingresa el tipo de central']
+    },
+    ubicacion: {
+        type: String,
+        required: [true, 'Por favor ingresa la ubicacion']
+    },
     direccion: {
         type: String,
         required: [true, 'Por favor ingresa la direccion']
