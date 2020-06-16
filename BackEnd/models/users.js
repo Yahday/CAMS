@@ -42,6 +42,12 @@ let userSchema = new Schema({
             ref: 'Area',
         }
     }],
+    cm: [{
+        codigoCM: {
+            type: Schema.Types.ObjectId,
+            ref: 'CM',
+        }
+    }],
     Permisos: [{
             id_permiso: {
                 type: Schema.Types.ObjectId,
