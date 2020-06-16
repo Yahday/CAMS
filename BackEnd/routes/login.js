@@ -24,17 +24,16 @@ app.post('/login', async(req, res) => {
 
     const payload = { //Para guardar ID de usuario
         check: true,
-        userId: user
+        user: user._id
     };
 
     const token = jwt.sign(payload, process.env.SEED, {
-        expiresIn: 1440
+        expiresIn: 1200
     });
 
     res.json({
         mensaje: 'Autenticación correcta',
-        token: token,
-        _id: payload.userId
+        token: token
     });
 });
 

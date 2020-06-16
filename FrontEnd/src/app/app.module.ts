@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { routing , appRoutingProviders } from './app.routing';
 import { RouterModule, Routes }  from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -38,6 +38,7 @@ import { AutorizacionComponent } from './components/login/autorizacion/autorizac
 
 import { AuthGuard } from "./auth.guard";
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MDBBootstrapModule.forRoot(),
     LayoutModule
   ],
-  providers: [ AuthGuard ],
+  providers: [ AuthGuard,
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

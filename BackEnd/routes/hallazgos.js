@@ -6,8 +6,8 @@ const Hallazgos = require('../models/hallazgos');
 //Controller
 const HallazgosCtrl = {};
 
-//Ver hallazgos por status
-HallazgosCtrl.getHallazgos = async (req, res) => {                  
+//Ver hallazgos del actual status agrupados en areas y acomodado en orden de criticidad
+HallazgosCtrl.getHallazgos = async (req, res) => {
     const estado = req.params.status   //Status solicitado (validos: pendientes, ots, revision y liquidacion)
     const cm = req.body.cm             //Central de Mantenimiento del Usuario
     const areas = req.body.areas       //Array de Areas que el Usuario puede ver
@@ -41,7 +41,6 @@ HallazgosCtrl.getHallazgos = async (req, res) => {
     })
 }
 
-
 HallazgosCtrl.postHallazgo = async (req, res) => { //Nuevo Hallazgo
     const hallazgo = req.body;
     const newHallazgo = new Hallazgos({
@@ -70,11 +69,59 @@ HallazgosCtrl.postHallazgo = async (req, res) => { //Nuevo Hallazgo
     })   
 }
 
+HallazgosCtrl.editHallazgo = async (req, res) => { //Editar Hallazgo
+    const id = req.params.id //id del hallazgo
+    const hallazgo = req.body;
+    const hallazgoEditado = { //Nuevos datos
+        area: hallazgo.area,
+        activities: hallazgo.activities,
+        criticity: hallazgo.criticity,
+        siniestro: hallazgo.siniestro
+    };
+    await Hallazgos.findByIdAndUpdate(id, {$set: hallazgoEditado})
+    .exec((err) => {                                              
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            } else {
+                return res.status(200).json({
+                    ok: true,
+                    message: `Hallazgo actualizado`
+                })
+            }
+        })
+}
+
+HallazgosCtrl.deleteHallazgo = async (req, res) => { //Eliminar Hallazgo
+    const id = req.params.id //id del hallazgo
+    await Hallazgos.findByIdAndDelete(id)
+    .exec((err) => {                                              
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            } else {
+                return res.status(200).json({
+                    ok: true,
+                    message: `Hallazgo eliminado`
+                })
+            }
+        })
+}
+
+HallazgosCtrl.comentarHallazgo = async (req, res) => { //Pendiente comentario (checar datos del token)
+    const id = req.params.id //id del hallazgo
+    const user = req.body.user;  
+}
 
 HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Status
     const id = req.params.id //id del hallazgo
     const direccion = req.params.mover //Si hallazgo se manda a siguiente o anterior Status
-    const status = req.params.status; //status actual del hallazgo    
+    const status = req.params.status; //status actual del hallazgo
+    const user = req.body.user;    
     let newStatus = '' //el hallazgo cambiara al valor de este status
     if (direccion == 'sig') { //Si se avanza a siguiente status...
         switch (status) {
@@ -118,7 +165,12 @@ HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Sta
                 });
         }
     }
-    await Hallazgos.findByIdAndUpdate(id, {status: newStatus}).exec((err, hallazgo) => {
+    let comentario = { //Comentario automático de cambio de Status
+        user: user,
+        comment: `Hallazgo ${hallazgo.folio} enviado a ${newStatus}`,
+        fecha: req.body.fecha
+    } 
+    await Hallazgos.findByIdAndUpdate(id, {status: newStatus, $push: {bitacora: comentario}}).exec((err, hallazgo) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -127,14 +179,16 @@ HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Sta
         }
         return res.status(200).json({
             ok: true,
-            message: `Hallazgo ${hallazgo.folio} enviado a ${newStatus}`
+            message: comentario
         })
     })   
 }
-
 //Sub-routes
 router.get('/hallazgos/:status', HallazgosCtrl.getHallazgos);//Ver hallazgos por status
 router.post('/hallazgos/:status', HallazgosCtrl.postHallazgo);//Nuevo hallazgo
+
+router.put('/hallazgos/:status/:id', HallazgosCtrl.editHallazgo);//Editar Hallazgo
+router.delete('/hallazgos/:status/:id', HallazgosCtrl.deleteHallazgo);//Eliminar Hallazgo
 
 router.put('/hallazgos/:status/:id/:mover', HallazgosCtrl.moverHallazgo);//Mandar Hallazgo a siguiente o anterior Status
 
