@@ -1,40 +1,26 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
 
 autoIncrement.initialize(mongoose);
 
 let Schema = mongoose.Schema;
 
-let centralSchema = new Schema({
-    name: {
-        type: String,
-    },
-    alias: {
-        type: String,
-    },
-    siglas: {
-        type: String,
-    },
-    tipoCentral: {
-        type: String,
-    },
-    ubicacion: {
-        type: String,
-    },
-    direccion: {
+let mensajeSchema = new Schema({
+    usuario_envio: {
         type: String
     },
-    latitud: {
+    usuario_recibo: {
         type: String,
     },
-    longitud: {
+    fecha_hora: {
+        type: Date,
+    },
+    mensaje: {
         type: String,
     },
-    criticity: {
+    status: {
         type: String,
     },
-
 
     //campo para definir status en la bd
     estado: {
@@ -44,17 +30,17 @@ let centralSchema = new Schema({
 
 });
 
+
 //crea el id autoincrementable 
-centralSchema.plugin(autoIncrement.plugin, {
+mensajeSchema.plugin(autoIncrement.plugin, {
     model: '_id',
     field: '_id',
     startAt: 1,
     incrementBy: 1
 });
 
-centralSchema.plugin(uniqueValidator, {
+mensajeSchema.plugin(uniqueValidator, {
     message: '{PATH} Debe ser único y diferente'
 });
 
-
-module.exports = mongoose.model('Central', centralSchema);
+module.exports = mongoose.model('Mensaje', mensajeSchema);

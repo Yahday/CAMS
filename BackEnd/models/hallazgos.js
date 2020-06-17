@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
 
 autoIncrement.initialize(mongoose);
@@ -42,13 +41,15 @@ let hallazgoSchema = new Schema({
             default: false
         }
     }],
-    criticity: {
-        type: String
-    },
+    criticity: [{
+        valor: {
+            type: Number
+        },
+        descripcion: {
+            type: String
+        }
+    }],
     siniestro: {
-        type: String
-    },
-    flama: {
         type: String
     },
     bitacora: [{
