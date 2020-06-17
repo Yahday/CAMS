@@ -8,9 +8,7 @@ const fs = require('fs');
 app.get('/user', (req, res) => {
 
     User.find({ Status: true })
-        //.populate('codigoArea')
-        //.pupulate('codigoCM')
-        .exec((err, users) => {
+        .populate('codigoArea', 'codigoCM').exec((err, users) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -26,7 +24,7 @@ app.get('/user', (req, res) => {
         });
 });
 
-app.post('/use', (req, res) => {
+app.post('/user', (req, res) => {
     let body = req.body;
     let user = new User({
         name: body.name,
@@ -34,7 +32,11 @@ app.post('/use', (req, res) => {
         expediente: body.expediente,
         telefono: body.telefono,
         email: body.email,
-        password: bcrypt.hashSync(body.password, 10)
+        password: bcrypt.hashSync(body.password, 10),
+        avatar: body.avatar,
+        area: body.area,
+        cm: body.cm,
+        Permisos: body.Permisos
     });
 
     user.save((err, usrDB) => {
@@ -68,6 +70,9 @@ app.post('/userImg', (req, res) => {
         email: body.email,
         avatar: urlImagen,
         password: bcrypt.hashSync(body.password, 10),
+        area: body.area,
+        cm: body.cm,
+        Permisos: body.Permisos
     });
 
     user.save((err, usrDB) => {

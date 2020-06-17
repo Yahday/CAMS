@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-//const URI = 'mongodb+srv://superadmin:MSCams140@cams-oflpi.mongodb.net/CAMS?retryWrites=true&w=majority';
-const URI = 'mongodb://localhost:27017/CAMSpruebas';
+const URI = 'mongodb+srv://superadmin:MSCams140@cams-oflpi.mongodb.net/CAMS?retryWrites=true&w=majority';
+// const URI = 'mongodb://localhost:27017/CAMSpruebas';
 
 
 
