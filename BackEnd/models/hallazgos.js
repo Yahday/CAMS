@@ -23,24 +23,14 @@ let hallazgoSchema = new Schema({
         type: Schema.Types.String,
         ref: 'Area',
     },
-    Activities: [{
-        activity: {
-            type: String,
-        },
-        tasks: {
-            type: String,
-        },
-        img_hall: {
-            type: String,
-        },
-        img_liq: {
-            type: String,
-        },
-        status: {
-            type: Boolean,
-            default: false
-        }
-    }],
+    activity: {
+        type: Schema.Types.String,
+        ref: 'Activities',
+    },
+    task: {
+        type: Schema.Types.String,
+        ref: 'Activities',
+    },
     criticity: [{
         valor: {
             type: Number
@@ -52,6 +42,21 @@ let hallazgoSchema = new Schema({
     siniestro: {
         type: String
     },
+    folios_extra:  {        
+        type: String    
+    },
+    //Fotografias al momento de levantar y editar el reporte
+    fotografias_h: [{
+        fotografia: {
+            type: String,
+        }
+    }],
+    //Fotografias al momento de liquidar el reporte
+    fotografias_l: [{
+        fotografia: {
+            type: String,
+        }
+    }],
     bitacora: [{
         user: {
             type: String,

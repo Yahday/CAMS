@@ -16,9 +16,11 @@ let centralSchema = new Schema({
     siglas: {
         type: String,
     },
-    tipoCentral: {
-        type: String,
-    },
+    tipoCentral: [{
+        tipo: {
+            type: String
+        }
+    }],
     ubicacion: {
         type: String,
     },
