@@ -8,45 +8,49 @@ const Hallazgos = require('../models/hallazgos');
 router.use([rutasProtegidas, getUsuario])
 
 //Controller
+
 const HallazgosCtrl = {};
 
 //Ver hallazgos del actual status agrupados en areas y acomodado en orden de criticidad
-HallazgosCtrl.getHallazgos = async (req, res) => {
-    const estado = req.params.status   //Status solicitado (validos: pendientes, ots, revision y liquidacion)
-    const user = req.user
-    const cm = user.cm       //Central de Mantenimiento del Usuario
-    const areas = req.areas  //Array de Areas que el Usuario puede ver
-    await Hallazgos.aggregate([
-        {$match: { //Filtros
-            area: {$in: areas }, 
-            status: estado, 
-            centroManto: 'AGS'
-        }}, 
-        {$group:{
-            _id: "$area",               //Agrupar por Areas
-            cant_folios: { $sum: 1 },   //Contar los folios existentes en cada area
-            hallazgos_area: {           //Arrojar Folio y Criticidad
-                $addToSet: {folio: "$folio", Criticidad: "$criticity"}
-            } 
-        }},         
-        {$sort : {criticity : -1}} //Acomodar por criticidad del folio en descendente (mayor criticidad primero) 
-    ])
-    .exec((err, hallazgos) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        } else {
-            return res.status(200).json({
-                ok: true,
-                hallazgos
-            })
-        }
-    })
+HallazgosCtrl.getHallazgos = async(req, res) => {
+    const estado = req.params.status //Status solicitado (validos: pendientes, ots, revision y liquidacion)
+    const cm = req.body.cm //Central de Mantenimiento del Usuario
+    const areas = req.body.areas //Array de Areas que el Usuario puede ver
+    await Hallazgos.aggregate([{
+                $match: { //Filtros
+                    area: { $in: areas },
+                    status: estado,
+                    centroManto: cm
+                }
+            },
+            {
+                $group: {
+                    _id: "$area", //Agrupar por Areas
+                    cant_folios: { $sum: 1 }, //Contar los folios existentes en cada area
+                    hallazgos_area: { //Arrojar Folio y Criticidad
+                        $addToSet: { folio: "$folio", Criticidad: "$criticity" }
+                    }
+                }
+            },
+            { $sort: { criticity: -1 } } //Acomodar por criticidad del folio en descendente (mayor criticidad primero) 
+        ])
+        .exec((err, hallazgos) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            } else {
+                return res.status(200).json({
+                    ok: true,
+                    hallazgos
+                })
+
+            }
+        })
 }
 
-HallazgosCtrl.postHallazgo = async (req, res) => { //Nuevo Hallazgo
+HallazgosCtrl.postHallazgo = async(req, res) => { //Nuevo Hallazgo
     const hallazgo = req.body;
     const newHallazgo = new Hallazgos({
         fecha: hallazgo.fecha,
@@ -71,10 +75,10 @@ HallazgosCtrl.postHallazgo = async (req, res) => { //Nuevo Hallazgo
             ok: true,
             message: `Hallazgo ${hallazgo.folio} guardado`
         })
-    })   
+    })
 }
 
-HallazgosCtrl.editHallazgo = async (req, res) => { //Editar Hallazgo
+HallazgosCtrl.editHallazgo = async(req, res) => { //Editar Hallazgo
     const id = req.params.id //id del hallazgo
     const hallazgo = req.body;
     const hallazgoEditado = { //Nuevos datos
@@ -83,8 +87,8 @@ HallazgosCtrl.editHallazgo = async (req, res) => { //Editar Hallazgo
         criticity: hallazgo.criticity,
         siniestro: hallazgo.siniestro
     };
-    await Hallazgos.findByIdAndUpdate(id, {$set: hallazgoEditado})
-    .exec((err) => {                                              
+    await Hallazgos.findByIdAndUpdate(id, { $set: hallazgoEditado })
+        .exec((err) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -99,10 +103,10 @@ HallazgosCtrl.editHallazgo = async (req, res) => { //Editar Hallazgo
         })
 }
 
-HallazgosCtrl.deleteHallazgo = async (req, res) => { //Eliminar Hallazgo
+HallazgosCtrl.deleteHallazgo = async(req, res) => { //Eliminar Hallazgo
     const id = req.params.id //id del hallazgo
     await Hallazgos.findByIdAndDelete(id)
-    .exec((err) => {                                              
+        .exec((err) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -117,9 +121,9 @@ HallazgosCtrl.deleteHallazgo = async (req, res) => { //Eliminar Hallazgo
         })
 }
 
-HallazgosCtrl.comentarHallazgo = async (req, res) => { //Pendiente comentario (checar datos del token)
+HallazgosCtrl.comentarHallazgo = async(req, res) => { //Pendiente comentario (checar datos del token)
     const id = req.params.id //id del hallazgo
-    const user = req.body.user;  
+    const user = req.body.user;
 }
 
 HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Status
@@ -171,34 +175,22 @@ HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Sta
                     ok: false,
                     err
                 });
-        }
+            }       
     }
-    let comentario = { //Comentario automático de cambio de Status
-        user: user,
-        comment: `Hallazgo ${hallazgo.folio} enviado a ${newStatus}`,
-        fecha: req.body.fecha
-    } 
-    await Hallazgos.findByIdAndUpdate(id, {status: newStatus, $push: {bitacora: comentario}}).exec((err, hallazgo) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
-        return res.status(200).json({
-            ok: true,
-            message: comentario
-        })
-    })   
+    return res.status(200).json({
+        ok: true,
+        message: comentario
+    })
 }
 //Sub-routes
-router.get('/hallazgos/:status', HallazgosCtrl.getHallazgos);//Ver hallazgos por status
-router.post('/hallazgos/:status', HallazgosCtrl.postHallazgo);//Nuevo hallazgo
+router.get('/hallazgos/:status', HallazgosCtrl.getHallazgos); //Ver hallazgos por status
+router.post('/hallazgos/:status', HallazgosCtrl.postHallazgo); //Nuevo hallazgo
 
-router.put('/hallazgos/:status/:id', HallazgosCtrl.editHallazgo);//Editar Hallazgo
-router.delete('/hallazgos/:status/:id', HallazgosCtrl.deleteHallazgo);//Eliminar Hallazgo
+router.put('/hallazgos/:status/:id', HallazgosCtrl.editHallazgo); //Editar Hallazgo
+router.delete('/hallazgos/:status/:id', HallazgosCtrl.deleteHallazgo); //Eliminar Hallazgo
 
-router.put('/hallazgos/:status/:id/:mover', HallazgosCtrl.moverHallazgo);//Mandar Hallazgo a siguiente o anterior Status
+router.put('/hallazgos/:status/:id/:mover', HallazgosCtrl.moverHallazgo); //Mandar Hallazgo a siguiente o anterior Status
 
 
-module.exports = router;
+
+router.get('/hallazgo/:estado', HallazgoCtrl.getHallazgos); //Ver hallazgos

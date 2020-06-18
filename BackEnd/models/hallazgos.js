@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
 
 autoIncrement.initialize(mongoose);
@@ -24,33 +23,40 @@ let hallazgoSchema = new Schema({
         type: Schema.Types.String,
         ref: 'Area',
     },
-    Activities: [{
-        activity: {
-            type: String,
+    activity: {
+        type: Schema.Types.String,
+        ref: 'Activities',
+    },
+    task: {
+        type: Schema.Types.String,
+        ref: 'Activities',
+    },
+    criticity: [{
+        valor: {
+            type: Number
         },
-        tasks: {
-            type: String,
-        },
-        img_hall: {
-            type: String,
-        },
-        img_liq: {
-            type: String,
-        },
-        status: {
-            type: Boolean,
-            default: false
+        descripcion: {
+            type: String
         }
     }],
-    criticity: {
-        type: String
-    },
     siniestro: {
         type: String
     },
-    flama: {
-        type: String
+    folios_extra:  {        
+        type: String    
     },
+    //Fotografias al momento de levantar y editar el reporte
+    fotografias_h: [{
+        fotografia: {
+            type: String,
+        }
+    }],
+    //Fotografias al momento de liquidar el reporte
+    fotografias_l: [{
+        fotografia: {
+            type: String,
+        }
+    }],
     bitacora: [{
         user: {
             type: String,

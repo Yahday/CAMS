@@ -44,21 +44,16 @@ let userSchema = new Schema({
     }],
     cm: [{
         codigoCM: {
-            type: Schema.Types.ObjectId,
+            type: Schema.Types.String,
             ref: 'CM',
         }
     }],
     Permisos: [{
-            id_permiso: {
-                type: Schema.Types.ObjectId,
-                ref: 'Permisos',
-            }
-        }]
-        // id_actor: {
-        //     type: Schema.Types.String,
-        //     ref: 'Actors',
-        //     required: [true, 'Ingresar el id del actor']
-        // },
+        id_permiso: {
+            type: Schema.Types.ObjectId,
+            ref: 'Permisos',
+        }
+    }]
 });
 
 userSchema.plugin(uniqueValidator, {

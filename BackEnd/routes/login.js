@@ -37,7 +37,7 @@ app.post('/login', async(req, res) => {
     });
 });
 
-app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
+app.post('/login/forgot', async(req, res) => { //Recuperar contraseña
 
     const parametro = req.body.parametro;
     const valor = req.body.valor;
@@ -51,16 +51,18 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
 
     if (parametro == 'numEmpleado') { //Con numero de Empleado
         const user = await User.findOne({ expediente: valor });
+
         if (!user) return res.status(400).send("Invalid Data");
+
         return res.send(sendAMail(user))
-    } 
+    }
 
     //Mandar Mail
-    async function sendAMail  (user) {
-        let oldPass = user.password;//Obtener contraseña y generar nueva
-        oldPass = oldPass.substr(3,8);
+    async function sendAMail(user) {
+        let oldPass = user.password; //Obtener contraseña y generar nueva
+        oldPass = oldPass.substr(3, 8);
         const newPass = bcrypt.hashSync(oldPass, 10);
-        await User.findByIdAndUpdate(user._id, {password: newPass});
+        await User.findByIdAndUpdate(user._id, { password: newPass });
 
         const transporter = nodemailer.createTransport({ //Datos del SMTP 
             host: 'smtp.office365.com',

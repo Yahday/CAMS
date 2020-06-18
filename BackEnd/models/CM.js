@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 const uniqueValidator = require('mongoose-unique-validator');
-//const autoIncrement = require('mongoose-auto-increment');
-
-//autoIncrement.initialize(mongoose);
+autoIncrement.initialize(mongoose);
 
 //CENTRO MANTENIMIENTO
 
@@ -19,11 +18,11 @@ let cmSchema = new Schema({
     },
     codigoCentral: {
         type: Schema.Types.String,
-        ref: 'Central'
+        ref: 'Central',
     },
     codigoArea: {
         type: Schema.Types.String,
-        ref: 'Area'
+        ref: 'Area',
     },
 
     //campo para definir status en la bd
