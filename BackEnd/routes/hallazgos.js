@@ -1,7 +1,11 @@
 const { Router } = require('express');
 const router = Router();
 
+const { rutasProtegidas } = require('../middlewares/autentication');
+const { getUsuario } = require('../middlewares/getuser');
 const Hallazgos = require('../models/hallazgos');
+
+router.use([rutasProtegidas, getUsuario])
 
 //Controller
 const HallazgosCtrl = {};
@@ -9,13 +13,14 @@ const HallazgosCtrl = {};
 //Ver hallazgos del actual status agrupados en areas y acomodado en orden de criticidad
 HallazgosCtrl.getHallazgos = async (req, res) => {
     const estado = req.params.status   //Status solicitado (validos: pendientes, ots, revision y liquidacion)
-    const cm = req.body.cm             //Central de Mantenimiento del Usuario
-    const areas = req.body.areas       //Array de Areas que el Usuario puede ver
+    const user = req.user
+    const cm = user.cm       //Central de Mantenimiento del Usuario
+    const areas = req.areas  //Array de Areas que el Usuario puede ver
     await Hallazgos.aggregate([
         {$match: { //Filtros
             area: {$in: areas }, 
             status: estado, 
-            centroManto: cm 
+            centroManto: 'AGS'
         }}, 
         {$group:{
             _id: "$area",               //Agrupar por Areas
@@ -49,7 +54,7 @@ HallazgosCtrl.postHallazgo = async (req, res) => { //Nuevo Hallazgo
         centroManto: hallazgo.folio,
         central: hallazgo.central,
         area: hallazgo.area,
-        activities: hallazgo.activities,
+        Activities: hallazgo.activities,
         criticity: hallazgo.criticity,
         siniestro: hallazgo.siniestro,
         bitacora: hallazgo.bitacora,
@@ -125,7 +130,7 @@ HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Sta
     let newStatus = '' //el hallazgo cambiara al valor de este status
     if (direccion == 'sig') { //Si se avanza a siguiente status...
         switch (status) {
-            case 'pendientes':
+            case 'hallazgo':
                 newStatus = 'ots'
                 break;
             case 'ots':
@@ -146,8 +151,11 @@ HallazgosCtrl.moverHallazgo = async (req, res) => { //Mandar Hallazgo a otro Sta
     }
     if (direccion == 'ant') {//Si se regresa a anterior status...
         switch (status) {
+            case 'hallazgo'://En caso de eliminar el hallazgo
+                newStatus = 'archivero'
+                break;
             case 'ots':
-                newStatus = 'pendientes'
+                newStatus = 'hallazgo'
                 break;
             case 'revision':
                 newStatus = 'ots'

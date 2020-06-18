@@ -28,7 +28,7 @@ app.post('/login', async(req, res) => {
     };
 
     const token = jwt.sign(payload, process.env.SEED, {
-        expiresIn: 1200
+        expiresIn: 86400
     });
 
     res.json({
