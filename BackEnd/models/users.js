@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
+const Areas = require('./areas');
+const CM = require('./CM');
+
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
@@ -38,15 +41,15 @@ let userSchema = new Schema({
     },
     area: [{
         codigoArea: {
-            type: Schema.Types.ObjectId,
-            ref: 'Area',
-        }
+            type: Schema.Types.Number,
+            ref: Areas,   
+        }    
     }],
     cm: [{
         codigoCM: {
-            type: Schema.Types.String,
-            ref: 'CM',
-        }
+            type: Schema.Types.Number,
+            ref: CM 
+        }        
     }],
     Permisos: [{
         id_permiso: {

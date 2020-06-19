@@ -17,24 +17,30 @@ app.post('/login', async(req, res) => {
 
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
-    if (!user) return res.status(401).send("User do not exist");
+    if (!user) return res.status(401).send("User or password wrong");
     if (!bcrypt.compareSync(password, user.password)) {
-        return res.status(401).send("Wrong Password");
+        return res.status(401).send("User or password wrong");
     }
 
-    const payload = { //Para guardar ID de usuario
-        check: true,
-        user: user._id
-    };
+    if(user.Status == true) {
+        const payload = { //Para guardar ID de usuario
+            check: true,
+            user: user._id
+        };
 
-    const token = jwt.sign(payload, process.env.SEED, {
-        expiresIn: 1200
-    });
+        const token = jwt.sign(payload, process.env.SEED, {
+            expiresIn: 86400
+        });
 
-    res.json({
-        mensaje: 'Autenticación correcta',
-        token: token
-    });
+        res.json({
+            mensaje: 'Correct Authentication',
+            token: token
+        });
+    } else {
+        return res.status(401).send("User or password wrong");
+    }
+
+    
 });
 
 app.post('/login/forgot', async(req, res) => { //Recuperar contraseña
