@@ -4,23 +4,27 @@ const rutasProtegidas = express.Router();
 
 
 rutasProtegidas.use((req, res, next) => {
-  const token = req.headers.access;
 
-  if (!token) {
+  if (!req.headers.access) {
     return res.status(401).send('Unathorize Request');
   }
 
+  const token = req.headers.access.split(' ')[1];
   if (token === 'null') {
     return res.status(401).send('Unathorize Request');
   }
 
   jwt.verify(token, process.env.SEED, (err) => {      
     if (err) {
-      return res.json({ mensaje: 'Token inválida' });    
+      return res.json({ 
+        mensaje: 'Token inválida',
+        err 
+      });    
     }
-    });
+  });
   const payload = jwt.verify(token, process.env.SEED);  
-  req.userId = payload.userId
+  req.userId = payload.user
+
   next();
 });
 

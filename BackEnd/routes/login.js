@@ -24,21 +24,20 @@ app.post('/login', async(req, res) => {
 
     const payload = { //Para guardar ID de usuario
         check: true,
-        userId: user._id
+        user: user._id
     };
 
     const token = jwt.sign(payload, process.env.SEED, {
-        expiresIn: 1440
+        expiresIn: 1200
     });
 
     res.json({
         mensaje: 'Autenticación correcta',
-        token: token,
-        _id: payload.userId
+        token: token
     });
 });
 
-app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
+app.post('/login/forgot', async(req, res) => { //Recuperar contraseña
 
     const parametro = req.body.parametro;
     const valor = req.body.valor;
@@ -46,24 +45,24 @@ app.post('/login/forgot', async (req, res) => { //Recuperar contraseña
     if (parametro == 'email') { //Con email
 
         const user = await User.findOne({ email: valor });
-        if (!user) return res.status(401).send("Invalid Data");
+        if (!user) return res.status(400).send("Invalid Data");
         return res.send(sendAMail(user))
     }
 
     if (parametro == 'numEmpleado') { //Con numero de Empleado
         const user = await User.findOne({ expediente: valor });
 
-        const user = await User.findOne({email: valor});
-        if (!user) return res.status(401).send("Invalid Data");
+        if (!user) return res.status(400).send("Invalid Data");
+
         return res.send(sendAMail(user))
-    } 
+    }
 
     //Mandar Mail
-    async function sendAMail  (user) {
-        let oldPass = user.password;//Obtener contraseña y generar nueva
-        oldPass = oldPass.substr(3,8);
+    async function sendAMail(user) {
+        let oldPass = user.password; //Obtener contraseña y generar nueva
+        oldPass = oldPass.substr(3, 8);
         const newPass = bcrypt.hashSync(oldPass, 10);
-        await User.findByIdAndUpdate(user._id, {password: newPass});
+        await User.findByIdAndUpdate(user._id, { password: newPass });
 
         const transporter = nodemailer.createTransport({ //Datos del SMTP 
             host: 'smtp.office365.com',

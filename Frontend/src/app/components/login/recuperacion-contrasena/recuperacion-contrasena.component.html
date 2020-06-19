@@ -14,7 +14,7 @@
 
 
             <div class="form-group mt-4  d-flex mx-xs-0 px-sm-0 px-xs-0 mx-sm-0 justify-content-center ">
-                <select [(ngModel)]="user.parametro" class="form-control form-control-lg lead text-center w-100" name="parametro" id="">
+                <select [(ngModel)]="user.parametro" class="form-control form-control-lg lead text-center w-100" name="parametro" id="" required>
                     <option name="correo"  value="email"> {{correo}} </option>
                     <option name="numEmp" value="numEmpleado"> {{numEmp}} </option>
                 </select>
@@ -22,7 +22,7 @@
 
             <h3 class="lead text-muted mt-0!important">Elije la opcion para restablecer la contraseña</h3>
               
-            <input [(ngModel)]="user.valor" class="form-control form-control-lg mt-4" type="text" name="valorCorreo" placeholder="Correo o Num. de Empleado">
+            <input [(ngModel)]="user.valor" class="form-control form-control-lg mt-4" type="text" name="valorCorreo" placeholder="Correo o Num. de Empleado" required>
 
             <!-- Sign in button -->
             <div class="d-flex  justify-content-center  mb-auto ">

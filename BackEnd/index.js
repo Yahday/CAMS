@@ -14,7 +14,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
         'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization, token'
+        'Origin, X-Requested-With, Content-Type, Accept, access, token'
     );
     res.setHeader(
         'Access-Control-Allow-Methods',
@@ -32,6 +32,12 @@ app.get('/', (req, res) => {
     res.send('<h1>CAMS</h1>');
 });
 app.use('/api', require('./routes/index.routes'));
+
+app.get('*', function(req, res) { //Error 404
+    res.status(404).json({
+        message: 'Ruta no existe'
+    });
+});
 
 //SERVER
 app.listen(process.env.PORT, () => {

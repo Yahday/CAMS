@@ -15,6 +15,7 @@ import { OrdenesEnProcesoComponent } from  './components/ordenes-en-proceso/orde
 import { RecuperacionContrasenaComponent } from './components/login/recuperacion-contrasena/recuperacion-contrasena.component';
 import { PantallaAutorizacionComponent } from './components/login/recuperacion-contrasena/pantalla-autorizacion/pantalla-autorizacion.component';
 import { AutorizacionComponent } from './components/login/autorizacion/autorizacion.component';
+import { NotFoundComponent } from "./components/not-found/not-found.component";
 
 import { AuthGuard } from "./auth.guard";
 
@@ -33,8 +34,9 @@ const appRoutes: Routes = [
     {path: 'ordenes-en-proceso' ,  component :   OrdenesEnProcesoComponent}   ,
     {path: 'login/forgot' ,  component :   RecuperacionContrasenaComponent} ,  
     {path: 'pantalla-autorizacion' ,  component :   PantallaAutorizacionComponent},   
-    {path: 'autorizacion' ,  component :   AutorizacionComponent}   
-
+    {path: 'autorizacion' ,  component :   AutorizacionComponent},   
+    {path: '404' ,  component :   NotFoundComponent},
+    {path: '**', redirectTo: '/404'}
 ];
 
 //exportar modulo de rutas
