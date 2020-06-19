@@ -35,12 +35,12 @@ let cmSchema = new Schema({
 
 
 //crea el id autoincrementable 
-/*cmSchema.plugin(autoIncrement.plugin, {
+cmSchema.plugin(autoIncrement.plugin, {
     model: '_id',
     field: '_id',
     startAt: 1,
     incrementBy: 1
-});*/
+});
 
 cmSchema.plugin(uniqueValidator, {
     message: '{PATH} Debe ser único y diferente'

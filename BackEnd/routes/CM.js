@@ -7,9 +7,7 @@ app.post('/cm', (req, res) => {
     let body = req.body;
     let cm = new CM({
         name: body.name,
-        ubicacion: body.ubicacion,
-        codigoCentral: body.codigoCentral,
-        codigoActor: body.codigoActor
+        ubicacion: body.ubicacion
     });
 
     cm.save((err, cmDB) => {
