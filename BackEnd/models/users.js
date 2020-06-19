@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-
+const autoIncrement = require('mongoose-auto-increment');
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
@@ -54,6 +54,14 @@ let userSchema = new Schema({
             ref: 'Permisos',
         }
     }]
+});
+
+//crea el id autoincrementable 
+userSchema.plugin(autoIncrement.plugin, {
+    model: '_id',
+    field: '_id',
+    startAt: 1,
+    incrementBy: 1
 });
 
 userSchema.plugin(uniqueValidator, {
