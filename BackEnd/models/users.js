@@ -59,7 +59,6 @@ let userSchema = new Schema({
     }]
 });
 
-
 //crea el id autoincrementable 
 userSchema.plugin(autoIncrement.plugin, {
     model: '_id',
