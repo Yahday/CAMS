@@ -4,9 +4,9 @@ const _ = require('underscore');
 const Central = require('../models/centrals');
 const app = express();
 
-app.get('/central', (req, res) => {
+app.get('/central', async (req, res) => {
 
-    Central.find({ estado: true })
+    await Central.find({ estado: true })
         .exec((err, centrals) => {
             if (err) {
                 return res.status(400).json({
@@ -23,7 +23,7 @@ app.get('/central', (req, res) => {
         });
 });
 
-app.post('/central', (req, res) => {
+app.post('/central', async (req, res) => {
     let body = req.body;
     let central = new Central({
         name: body.name,
@@ -38,7 +38,7 @@ app.post('/central', (req, res) => {
 
     });
 
-    central.save((err, centDB) => {
+    await central.save((err, centDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -52,10 +52,10 @@ app.post('/central', (req, res) => {
     });
 });
 
-app.put('/central/:id', (req, res) => {
+app.put('/central/:id', async (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['name', 'alias', 'siglas', 'tipoCentral', 'ubicacion', 'direccion', 'latitud', 'longitud', 'criticity']);
-    Central.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, centDB) => {
+    await Central.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, centDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -70,9 +70,9 @@ app.put('/central/:id', (req, res) => {
     });
 });
 
-app.delete('/central/:id', (req, res) => {
+app.delete('/central/:id', async (req, res) => {
     let id = req.params.id;
-    Central.findByIdAndUpdate(id, { estado: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
+    await Central.findByIdAndUpdate(id, { estado: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
         if (err) {
             return res.status(400).json({
                 ok: false,

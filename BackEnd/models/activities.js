@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose);
 
 let Schema = mongoose.Schema;
 
@@ -15,6 +17,13 @@ let activitiesSchema = new Schema({
             type: String 
         }
     }]
+});
+
+activitiesSchema.plugin(autoIncrement.plugin, {
+    model: '_id',
+    field: '_id',
+    startAt: 1,
+    incrementBy: 1
 });
 
 module.exports = mongoose.model('Activities', activitiesSchema);
