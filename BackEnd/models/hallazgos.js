@@ -17,7 +17,7 @@ let hallazgoSchema = new Schema({
         type: String,
     },
     central: {
-        type: Schema.Types.String,
+        type: Schema.Types.Number,
         ref: 'Central',
     },
     area: {
@@ -32,14 +32,14 @@ let hallazgoSchema = new Schema({
         type: Schema.Types.String,
         ref: 'Activities',
     },
-    criticity: [{
+    criticity: {
         valor: {
             type: Number
         },
         descripcion: {
             type: String
         }
-    }],
+    },
     siniestro: {
         type: String
     },

@@ -33,7 +33,8 @@ UserCtrl.getUsers = async (req, res) => {
 UserCtrl.getUser = async (req, res) => {
     const id = req.params.id
     await User.findById(id)
-        .populate('area')
+        .populate('area.codigoArea', 'name')
+        .populate('cm.codigoCM', 'name')
         .exec((err, user) => {
             if (err) {
                 return res.status(400).json({
@@ -41,10 +42,9 @@ UserCtrl.getUser = async (req, res) => {
                     err
                 });
             }
-            console.log(req.user);
             return res.status(200).json({
                 ok: true,
-                count: users.length,
+                count: user.length,
                 user
             });
         });
@@ -59,7 +59,8 @@ UserCtrl.addUser = async (req, res) => {
         telefono: body.telefono,
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
-        avatar: body.avatar
+        avatar: body.avatar,
+        cm: {codigoCM: body.cm} 
     });
 
     await user.save((err, usrDB) => {

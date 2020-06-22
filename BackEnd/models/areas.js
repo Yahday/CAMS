@@ -13,7 +13,7 @@ let areaSchema = new Schema({
         required: [true, 'Por favor ingresa el nombre del área']
     },
     activities: [{
-        type: Schema.Types.ObjectId, 
+        type: Schema.Types.Number, 
         ref: Activities
     }],
     Status: {
