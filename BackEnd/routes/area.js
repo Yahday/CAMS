@@ -2,6 +2,7 @@ const { Router } = require('express');
 const _ = require('underscore');
 const router = Router();
 
+const CM = require('../models/CM');
 const Areas = require('../models/areas');
 const Activities = require('../models/activities');
 
@@ -9,8 +10,8 @@ const Activities = require('../models/activities');
 const AreaCtrl = {};
 
 AreaCtrl.getAreas = async (req, res) => { //Ver todas las Areas
-    await Areas.find()
-        .populate('activities')
+    await CM.find({name: req.user.cm}, {name: 0, ubicacion: 0, codigoCentral: 0, estado: 0})
+        .populate({path: 'codigoArea', populate: {path: 'activities'}})
         .exec((err, areas) => {
             if (err) {
                 return res.status(400).json({
@@ -20,8 +21,7 @@ AreaCtrl.getAreas = async (req, res) => { //Ver todas las Areas
             }
             return res.status(200).json({
                 ok: true,
-                count: areas.length,
-                areas
+                Area: areas
             })
         })
 };
@@ -96,25 +96,6 @@ AreaCtrl.editArea = async (req, res) => { //Editar Nombre de la Area
                 })
             }    
         })    
-};
-
-AreaCtrl.getActivities = async (req, res) => { //Ver Actividades de un Area
-    const id = req.params.id;
-    await Areas.findById(id)
-    .populate('activities')
-    .exec((err, area) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
-        return res.status(200).json({
-            ok: true,
-            Area: area.name,
-            Actividades: area.activities
-        });
-    });
 };
 
 AreaCtrl.addActivity = async (req, res) => { //Agregar Actividad

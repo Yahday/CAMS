@@ -16,14 +16,14 @@ let cmSchema = new Schema({
         type: String,
         required: [true, 'Por favor ingresa la ubicacion']
     },
-    codigoCentral: {
-        type: Schema.Types.String,
+    codigoCentral: [{
+        type: Schema.Types.Number,
         ref: 'Central',
-    },
-    codigoArea: {
-        type: Schema.Types.String,
+    }],
+    codigoArea: [{
+        type: Schema.Types.Number,
         ref: 'Area',
-    },
+    }],
 
     //campo para definir status en la bd
     estado: {
