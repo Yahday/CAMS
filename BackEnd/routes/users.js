@@ -115,8 +115,26 @@ UserCtrl.addImg = async (req, res) => {
 
 UserCtrl.editUser = async (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['name', 'alias', 'expediente', 'telefono', 'email', 'password', 'Status']);
+    let body = _.pick(req.body, ['name', 'alias', 'expediente', 'telefono', 'email', 'Status']);
     await User.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+        return res.status(200).json({
+            ok: true,
+            usrDB
+        });
+
+    });
+};
+
+UserCtrl.editPass = async (req, res) => {
+    let id = req.params.id;
+    let pass = bcrypt.hashSync(req.body.password, 10);
+    await User.findByIdAndUpdate(id, {password: pass}, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -231,6 +249,8 @@ router.post('/user', UserCtrl.addUser);//Nuevo Usuario
 router.get('/user/:id', UserCtrl.getUser);//Buscar un Usuario
 router.put('/user/:id', UserCtrl.editUser);//Editar Usuario
 router.delete('/user/:id', UserCtrl.deleteUser);//Eliminar Usuario
+
+router.put('/user/:id/pass', UserCtrl.editPass);//Editar constraseña
 
 router.put('/user/:id/img', UserCtrl.addImg);//Agregar Imagen del Usuario
 
