@@ -10,7 +10,7 @@ const Activities = require('../models/activities');
 const AreaCtrl = {};
 
 AreaCtrl.getAreas = async (req, res) => { //Ver todas las Areas
-    await CM.find({name: req.user.cm}, {name: 0, ubicacion: 0, codigoCentral: 0, estado: 0})
+    await CM.findOne({name: req.user.cm})
         .populate({path: 'codigoArea', populate: {path: 'activities'}})
         .exec((err, areas) => {
             if (err) {
@@ -21,7 +21,8 @@ AreaCtrl.getAreas = async (req, res) => { //Ver todas las Areas
             }
             return res.status(200).json({
                 ok: true,
-                Area: areas
+                count: areas.codigoArea.length,
+                areas: areas.codigoArea
             })
         })
 };
