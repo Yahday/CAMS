@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const fs = require('fs');
 const router = Router();
 
 const Hallazgos = require('../models/hallazgos');
@@ -71,6 +72,19 @@ HallazgosCtrl.getHallazgos = async(req, res) => {
 
 HallazgosCtrl.postHallazgo = async(req, res) => { //Nuevo Hallazgo
     const hallazgo = req.body;
+    let fotografia = [];
+    let index = 0;
+    for (let foto of hallazgo.fotos) {
+        index++;
+        var Img = foto.replace(/^data:image\/jpeg;base64,/, "");
+        let urlImagen = '/imagenes/hallazgos/' + hallazgo.folio + '_' + index + '.jpg';
+        fotografia.push({
+            fotografia: urlImagen
+        });
+        fs.writeFile('imagenes/hallazgos/' + hallazgo.folio + '_' + index + '.jpg', Img, 'base64', function(err) {
+            console.log(err); // writes out file without error, but it's not a valid image
+        });
+    }
     const newHallazgo = new Hallazgos({
         fecha: hallazgo.fecha,
         folio: hallazgo.folio,
@@ -81,7 +95,8 @@ HallazgosCtrl.postHallazgo = async(req, res) => { //Nuevo Hallazgo
         criticity: hallazgo.criticity,
         siniestro: hallazgo.siniestro,
         bitacora: hallazgo.bitacora,
-        status: 'hallazgo'
+        status: 'hallazgo',
+        fotografias_h: fotografia
     });
     await newHallazgo.save((err, hallazgo) => {
         if (err) {
@@ -117,13 +132,30 @@ HallazgosCtrl.getHallazgo = async (req, res) => { //Buscar un Hallazgo
 HallazgosCtrl.editHallazgo = async(req, res) => { //Editar Hallazgo
     const id = req.params.id //id del hallazgo
     const hallazgo = req.body;
+
+    let fotografia = [];
+    let index = 0;
+    if (hallazgo.fotos.length > 0) {
+        for (let foto of hallazgo.fotos) {
+            index++;
+            var Img = foto.replace(/^data:image\/jpeg;base64,/, "");
+            let urlImagen = '/imagenes/hallazgos/' + hallazgo.folio + '_' + index + '.jpg';
+            fotografia.push({
+                fotografia: urlImagen
+            });
+            fs.writeFile('imagenes/hallazgos/' + hallazgo.folio + '_liq_' + index + '.jpg', Img, 'base64', function(err) {
+                console.log(err); // writes out file without error, but it's not a valid image
+            });
+        }
+    }
+    
     const hallazgoEditado = { //Nuevos datos
         area: hallazgo.area,
         activities: hallazgo.activities,
         criticity: hallazgo.criticity,
         siniestro: hallazgo.siniestro
     };
-    await Hallazgos.findByIdAndUpdate(id, { $set: hallazgoEditado })
+    await Hallazgos.findByIdAndUpdate(id, { $set: hallazgoEditado, $push: {fotografias_l: fotografia}})
         .exec((err) => {
             if (err) {
                 return res.status(400).json({
