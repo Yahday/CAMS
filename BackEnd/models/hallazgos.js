@@ -48,12 +48,18 @@ let hallazgoSchema = new Schema({
     },
     //Fotografias al momento de levantar y editar el reporte
     fotografias_h: [{
+        _id: {
+            type: Number,
+        },
         fotografia: {
             type: String,
         }
     }],
     //Fotografias al momento de liquidar el reporte
     fotografias_l: [{
+        _id: {
+            type: Number,
+        },
         fotografia: {
             type: String,
         }

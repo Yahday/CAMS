@@ -6,6 +6,24 @@ const Hallazgos = require('../models/hallazgos');
 
 //Controller
 
+function uploadIMG (fotos, folio, fotoDe){
+    let fotografia = [];
+    let index = 0;
+    for (let foto of fotos) {
+        index++;
+        var Img = foto.replace(/^data:image\/jpeg;base64,/, "");
+        let urlImagen =`./imagenes/hallazgos/${folio}_${fotoDe}_${index}.jpg`;
+        fotografia.push({
+            _id: index,
+            fotografia: urlImagen
+        });
+        fs.writeFile(`./imagenes/hallazgos/${folio}_${fotoDe}_${index}.jpg`, Img, 'base64', function(err) {
+            if (err) {console.log(err)}// writes out file without error, but it's not a valid image         
+        });
+    }
+    return fotografia
+}
+
 const HallazgosCtrl = {};
 
 //Ver hallazgos del actual status agrupados en areas y acomodado en orden de criticidad
@@ -72,29 +90,21 @@ HallazgosCtrl.getHallazgos = async(req, res) => {
 
 HallazgosCtrl.postHallazgo = async(req, res) => { //Nuevo Hallazgo
     const hallazgo = req.body;
-    let fotografia = [];
-    let index = 0;
-    for (let foto of hallazgo.fotos) {
-        index++;
-        var Img = foto.replace(/^data:image\/jpeg;base64,/, "");
-        let urlImagen = '/imagenes/hallazgos/' + hallazgo.folio + '_' + index + '.jpg';
-        fotografia.push({
-            fotografia: urlImagen
-        });
-        fs.writeFile('imagenes/hallazgos/' + hallazgo.folio + '_' + index + '.jpg', Img, 'base64', function(err) {
-            console.log(err); // writes out file without error, but it's not a valid image
-        });
-    }
+    let fotografia = uploadIMG(hallazgo.fotos, hallazgo.folio, 'hal');
     const newHallazgo = new Hallazgos({
         fecha: hallazgo.fecha,
         folio: hallazgo.folio,
         centroManto: hallazgo.cm,
         central: hallazgo.central,
         area: hallazgo.area,
-        Activities: hallazgo.activities,
+        activity: hallazgo.activity,
         criticity: hallazgo.criticity,
         siniestro: hallazgo.siniestro,
-        bitacora: hallazgo.bitacora,
+        bitacora: {
+            user: req.user.name,
+            comment: hallazgo.comment,
+            fecha: hallazgo.fecha
+        },
         status: 'hallazgo',
         fotografias_h: fotografia
     });
@@ -132,30 +142,14 @@ HallazgosCtrl.getHallazgo = async (req, res) => { //Buscar un Hallazgo
 HallazgosCtrl.editHallazgo = async(req, res) => { //Editar Hallazgo
     const id = req.params.id //id del hallazgo
     const hallazgo = req.body;
-
-    let fotografia = [];
-    let index = 0;
-    if (hallazgo.fotos.length > 0) {
-        for (let foto of hallazgo.fotos) {
-            index++;
-            var Img = foto.replace(/^data:image\/jpeg;base64,/, "");
-            let urlImagen = '/imagenes/hallazgos/' + hallazgo.folio + '_' + index + '.jpg';
-            fotografia.push({
-                fotografia: urlImagen
-            });
-            fs.writeFile('imagenes/hallazgos/' + hallazgo.folio + '_liq_' + index + '.jpg', Img, 'base64', function(err) {
-                console.log(err); // writes out file without error, but it's not a valid image
-            });
-        }
-    }
-    
+    let fotografia = uploadIMG(hallazgo.fotos, hallazgo.folio, 'liq');;
     const hallazgoEditado = { //Nuevos datos
         area: hallazgo.area,
         activities: hallazgo.activities,
         criticity: hallazgo.criticity,
         siniestro: hallazgo.siniestro
     };
-    await Hallazgos.findByIdAndUpdate(id, { $set: hallazgoEditado, $push: {fotografias_l: fotografia}})
+    await Hallazgos.findByIdAndUpdate(id, { $set: hallazgoEditado, $addToSet: {fotografias_l: fotografia}})
         .exec((err) => {
             if (err) {
                 return res.status(400).json({
@@ -165,7 +159,7 @@ HallazgosCtrl.editHallazgo = async(req, res) => { //Editar Hallazgo
             } else {
                 return res.status(200).json({
                     ok: true,
-                    message: `Hallazgo actualizado`
+                    message: `Hallazgo ${hallazgo.folio} actualizado`
                 })
             }
         })
