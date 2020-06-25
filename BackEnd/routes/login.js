@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -76,7 +77,7 @@ app.post('/login/forgot', async(req, res) => { //Recuperar contraseña
             secure: false,
             auth: {
                 user: 'camssoporte@hotmail.com',
-                pass: 'SSTelmex02'
+                pass: process.env.EMAIL_PASS
             },
             tls: {
                 ciphers: 'SSLv3'
