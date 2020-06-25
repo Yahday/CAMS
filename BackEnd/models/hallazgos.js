@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
 
 autoIncrement.initialize(mongoose);
@@ -16,7 +17,7 @@ let hallazgoSchema = new Schema({
         type: String,
     },
     central: {
-        type: Schema.Types.String,
+        type: Schema.Types.Number,
         ref: 'Central',
     },
     area: {
@@ -31,14 +32,14 @@ let hallazgoSchema = new Schema({
         type: Schema.Types.String,
         ref: 'Activities',
     },
-    criticity: [{
+    criticity: {
         valor: {
             type: Number
         },
         descripcion: {
             type: String
         }
-    }],
+    },
     siniestro: {
         type: String
     },
@@ -47,12 +48,18 @@ let hallazgoSchema = new Schema({
     },
     //Fotografias al momento de levantar y editar el reporte
     fotografias_h: [{
+        _id: {
+            type: Number,
+        },
         fotografia: {
             type: String,
         }
     }],
     //Fotografias al momento de liquidar el reporte
     fotografias_l: [{
+        _id: {
+            type: Number,
+        },
         fotografia: {
             type: String,
         }

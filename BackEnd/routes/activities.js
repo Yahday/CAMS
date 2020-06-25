@@ -53,7 +53,7 @@ ActivityCtrl.createActivity = async (req, res) => { //Nueva actividad
         }
         return res.status(200).json({
             ok: true,
-            message: `Area ${activity.name} guardada`
+            message: `Actividad ${activity.name} guardada`
         })
     });
 };
@@ -95,30 +95,12 @@ ActivityCtrl.editActivity = async (req, res) => { //Editar Nombre de la Activida
         })
 };
 
-ActivityCtrl.getTasks = async (req, res) => { //Ver Tareas de una Actividad
-    const id = req.params.id;
-    await Activities.findById(id)
-        .exec((err, actividad) => {
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
-            }
-            return res.status(200).json({
-                ok: true,
-                Actividad: actividad.name,
-                Tareas: actividad.tasks
-            });
-        });
-};
-
 ActivityCtrl.addTask = async (req, res) => { //Agregar una Tarea
     const id = req.params.id; //id de Actividad
     const name = req.body.name; //Nombre de la Tarea
     const criticity = req.body.criticity; //Criticidad de la Tarea
     const newTask = {name: name, criticity: criticity}; //"Nueva tarea"
-    await Activities.findByIdAndUpdate(id, {$push: {tasks: newTask}}) //En la Actividad seleccionada agregar 
+    await Activities.findByIdAndUpdate(id, {$push: {tasks: newTask}}) //En la Actividad seleccionada agregar  
         .exec((err) => {                                              //al Array tasks la "Nueva Tarea"
             if (err) {
                 return res.status(400).json({
@@ -157,7 +139,7 @@ ActivityCtrl.editTask = async (req, res) => {//Editar Tarea (se maneja como sust
 
 ActivityCtrl.deleteTask = async (req, res) => { //Eliminar Tarea
     const id = req.params.id; //id de Actividad
-    const task = req.params.task //Nombre de la Tarea a Eliminar
+    const task = req.body.name //Nombre de la Tarea a Eliminar
     await Activities.findByIdAndUpdate(id, {$pull: {tasks: {name: task}} }, (err) => { //En la Actividad seleccionada busca en el Array 
         if (err) {                                                                     //tasks el nombre de la tarea y eliminala
             return res.status(400).json({
@@ -181,10 +163,8 @@ router.get('/activities/:id', ActivityCtrl.getActivity);//Ver una Actividad
 router.put('/activities/:id', ActivityCtrl.editActivity);//Editar Nombre de la Actividad
 router.delete('/activities/:id', ActivityCtrl.deleteActivity);//Eliminar Actividad
 
-router.get('/activities/:id/tasks', ActivityCtrl.getTasks);//Ver Tareas de una Actividad
 router.post('/activities/:id/tasks', ActivityCtrl.addTask);//Nueva Tarea
-
-router.put('/activities/:id/tasks/:task', ActivityCtrl.editTask);//Editar Tarea
-router.delete('/activities/:id/tasks/:task', ActivityCtrl.deleteTask);//Eliminar Tarea
+router.put('/activities/:id/tasks', ActivityCtrl.editTask);//Editar Tarea
+router.delete('/activities/:id/tasks', ActivityCtrl.deleteTask);//Eliminar Tarea
 
 module.exports = router;
