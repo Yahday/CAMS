@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-//const uniqueValidator = require('mongoose-unique-validator');
 const autoIncrement = require('mongoose-auto-increment');
-
+const uniqueValidator = require('mongoose-unique-validator');
 autoIncrement.initialize(mongoose);
 
-//CENTRAL MANTENIMIENTO
+//CENTRO MANTENIMIENTO
 
 let Schema = mongoose.Schema;
 
@@ -20,17 +19,13 @@ let cmSchema = new Schema({
     codigoCentral: {
         type: Schema.Types.String,
         ref: 'Central',
-        required: [true, 'Ingresar el id de central']
     },
-    codigoActor: {
+    codigoArea: {
         type: Schema.Types.String,
-        ref: 'Actor',
-        required: [true, 'Ingresar el id del actor']
+        ref: 'Area',
     },
-    // gerencia: {
-    //     type: String,
-    //     required: [true, 'Por favor ingresa la gerencia']
-    // },
+
+    //campo para definir status en la bd
     estado: {
         type: Boolean,
         default: true
@@ -38,12 +33,14 @@ let cmSchema = new Schema({
 
 });
 
-// cmSchema.plugin(autoIncrement.plugin, {
-//     model: '_id',
-//     field: '_id',
-//     startAt: 1,
-//     incrementBy: 1
-// });
+
+//crea el id autoincrementable 
+cmSchema.plugin(autoIncrement.plugin, {
+    model: '_id',
+    field: '_id',
+    startAt: 1,
+    incrementBy: 1
+});
 
 cmSchema.plugin(uniqueValidator, {
     message: '{PATH} Debe ser único y diferente'

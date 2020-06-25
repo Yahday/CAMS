@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
-const Actors = require('./actors');
-const Tasks = require('./tasks');
 
 let Schema = mongoose.Schema;
 
 let activitiesSchema = new Schema({
     name: {
-        type: String
+        type: String,
+        required: [true, 'Por favor ingresa el nombre de la actividad']
     },
-    /*actor: {
-        type: Schema.Types.ObjectId,
-        ref: 'Actors'
-    },*/
     tasks: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'Tasks'
+        name: {
+            type: String 
+        },
+        criticity: {
+            type: String 
+        }
     }]
 });
 

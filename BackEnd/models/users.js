@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-
+const autoIncrement = require('mongoose-auto-increment');
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
@@ -36,23 +36,33 @@ let userSchema = new Schema({
         type: Boolean,
         default: true
     },
-    Actors: [{
-        id_actor: {
+    area: [{
+        codigoArea: {
             type: Schema.Types.ObjectId,
-            ref: 'Actor',
+            ref: 'Area',
+        }
+    }],
+    cm: [{
+        codigoCM: {
+            type: Schema.Types.String,
+            ref: 'CM',
         }
     }],
     Permisos: [{
-            id_permiso: {
-                type: Schema.Types.ObjectId,
-                ref: 'Permisos',
-            }
-        }]
-        // id_actor: {
-        //     type: Schema.Types.String,
-        //     ref: 'Actors',
-        //     required: [true, 'Ingresar el id del actor']
-        // },
+        id_permiso: {
+            type: Schema.Types.ObjectId,
+            ref: 'Permisos',
+        }
+    }]
+});
+
+//crea el id autoincrementable 
+autoIncrement.initialize(mongoose.connection);
+userSchema.plugin(autoIncrement.plugin, {
+    model: '_id',
+    field: '_id',
+    startAt: 1,
+    incrementBy: 1
 });
 
 userSchema.plugin(uniqueValidator, {
