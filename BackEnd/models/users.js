@@ -57,6 +57,7 @@ let userSchema = new Schema({
 });
 
 //crea el id autoincrementable 
+autoIncrement.initialize(mongoose.connection);
 userSchema.plugin(autoIncrement.plugin, {
     model: '_id',
     field: '_id',
