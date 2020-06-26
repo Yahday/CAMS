@@ -4,6 +4,7 @@ const { getUsuario } = require('../middlewares/getuser');
 const router = Router();
 
 router.use(require('./login'));
+router.use(require('./signup'));
 
 //Rutas Protegidas
 router.use([rutasProtegidas, getUsuario])  //Las siguientes rutas solo funcionan si el usuario: 1) Ya inicio sesion
