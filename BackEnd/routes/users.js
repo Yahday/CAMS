@@ -10,7 +10,7 @@ const router = Router();
 
 const UserCtrl = {};
 
-UserCtrl.getUsers = async (req, res) => {
+UserCtrl.getUsers = async(req, res) => {
 
     await User.find({ Status: true })
         .populate('area.codigoArea', 'name')
@@ -30,7 +30,7 @@ UserCtrl.getUsers = async (req, res) => {
         });
 };
 
-UserCtrl.getUser = async (req, res) => {
+UserCtrl.getUser = async(req, res) => {
     const id = req.params.id
     await User.findById(id)
         .populate('area.codigoArea', 'name')
@@ -50,7 +50,7 @@ UserCtrl.getUser = async (req, res) => {
         });
 };
 
-UserCtrl.addUser = async (req, res) => {
+UserCtrl.addUser = async(req, res) => {
     let body = req.body;
     let user = new User({
         name: body.name,
@@ -60,7 +60,7 @@ UserCtrl.addUser = async (req, res) => {
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
         avatar: body.avatar,
-        cm: {codigoCM: body.cm} 
+        cm: { codigoCM: body.cm }
     });
 
     await user.save((err, usrDB) => {
@@ -77,7 +77,7 @@ UserCtrl.addUser = async (req, res) => {
     });
 };
 
-UserCtrl.addImg = async (req, res) => {
+UserCtrl.addImg = async(req, res) => {
     let body = req.body;
     var Img = req.body.base64Image.replace(/^data:image\/jpeg;base64,/, "");
     fs.writeFile('imagenes/usuarios/' + body.alias + '.jpg', Img, 'base64', function(err) {
@@ -113,7 +113,7 @@ UserCtrl.addImg = async (req, res) => {
     });
 };
 
-UserCtrl.editUser = async (req, res) => {
+UserCtrl.editUser = async(req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['name', 'alias', 'expediente', 'telefono', 'email', 'Status']);
     await User.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
@@ -131,10 +131,10 @@ UserCtrl.editUser = async (req, res) => {
     });
 };
 
-UserCtrl.editPass = async (req, res) => {
+UserCtrl.editPass = async(req, res) => {
     let id = req.params.id;
     let pass = bcrypt.hashSync(req.body.password, 10);
-    await User.findByIdAndUpdate(id, {password: pass}, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
+    await User.findByIdAndUpdate(id, { password: pass }, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -149,19 +149,19 @@ UserCtrl.editPass = async (req, res) => {
     });
 };
 
-UserCtrl.addArea = async (req, res) => {
+UserCtrl.addArea = async(req, res) => {
     let id = req.params.id;
     const name = req.body.name;
-    await Areas.findOne({name: name}) //Busca el Área que se va a agregar al Usuario
-        .exec(async (err, area) => {
+    await Areas.findOne({ name: name }) //Busca el Área que se va a agregar al Usuario
+        .exec(async(err, area) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
                     err
                 });
             } else {
-                await User.findByIdAndUpdate(id, {$push: {area: {codigoArea: area._id}}}); //Agrega la Actividad buscada en el 
-                return res.status(200).json({                                        //Array de Actividades del Area
+                await User.findByIdAndUpdate(id, { $push: { area: { codigoArea: area._id } } }); //Agrega la Actividad buscada en el 
+                return res.status(200).json({ //Array de Actividades del Area
                     ok: true,
                     message: `Area ${name} agregada al Usuario`
                 })
@@ -169,19 +169,19 @@ UserCtrl.addArea = async (req, res) => {
         })
 };
 
-UserCtrl.addCM = async (req, res) => {
+UserCtrl.addCM = async(req, res) => {
     let id = req.params.id;
     const name = req.body.name;
-    await CM.findOne({name: name}) //Busca el CM que se va a agregar al Usuario
-        .exec(async (err, cm) => {
+    await CM.findOne({ name: name }) //Busca el CM que se va a agregar al Usuario
+        .exec(async(err, cm) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
                     err
                 });
             } else {
-                await User.findByIdAndUpdate(id, {$push: {cm: {codigoCM: cm._id}}}); //Agrega la Actividad buscada en el 
-                return res.status(200).json({                                        //Array de Actividades del Area
+                await User.findByIdAndUpdate(id, { $push: { cm: { codigoCM: cm._id } } }); //Agrega la Actividad buscada en el 
+                return res.status(200).json({ //Array de Actividades del Area
                     ok: true,
                     message: `Usuario agregado al Centro de Mantenimiento: ${name}`
                 })
@@ -189,10 +189,10 @@ UserCtrl.addCM = async (req, res) => {
         })
 };
 
-UserCtrl.deleteArea = async (req, res) => {
+UserCtrl.deleteArea = async(req, res) => {
     let id = req.params.id;
     let area = req.params.area
-    await User.findByIdAndUpdate(id, {$pull: {area: {codigoArea: area} }}) //Quita la Area del Usuario
+    await User.findByIdAndUpdate(id, { $pull: { area: { codigoArea: area } } }) //Quita la Area del Usuario
         .exec((err) => {
             if (err) {
                 return res.status(400).json({
@@ -204,14 +204,14 @@ UserCtrl.deleteArea = async (req, res) => {
                     ok: true,
                     message: `Area eliminada del Usuario`
                 })
-            }  
+            }
         })
 };
 
-UserCtrl.deleteCM = async (req, res) => {
+UserCtrl.deleteCM = async(req, res) => {
     let id = req.params.id;
     let cm = req.params.cm
-    await User.findByIdAndUpdate(id, {$pull: {cm: {codigoCM: cm} }}) //Quita la Area del Usuario
+    await User.findByIdAndUpdate(id, { $pull: { cm: { codigoCM: cm } } }) //Quita la Area del Usuario
         .exec((err) => {
             if (err) {
                 return res.status(400).json({
@@ -223,11 +223,11 @@ UserCtrl.deleteCM = async (req, res) => {
                     ok: true,
                     message: `Usuario eliminado del Centro de Mantenimiento`
                 })
-            }  
+            }
         })
 };
 
-UserCtrl.deleteUser = async (req, res) => {
+UserCtrl.deleteUser = async(req, res) => {
     let id = req.params.id;
     await User.findByIdAndUpdate(id, { Status: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
         if (err) {
@@ -243,21 +243,21 @@ UserCtrl.deleteUser = async (req, res) => {
     });
 };
 
-router.get('/user', UserCtrl.getUsers);//Ver todos los Usuarios
-router.post('/user', UserCtrl.addUser);//Nuevo Usuario
+router.get('/user', UserCtrl.getUsers); //Ver todos los Usuarios
+router.post('/user', UserCtrl.addUser); //Nuevo Usuario
 
-router.get('/user/:id', UserCtrl.getUser);//Buscar un Usuario
-router.put('/user/:id', UserCtrl.editUser);//Editar Usuario
-router.delete('/user/:id', UserCtrl.deleteUser);//Eliminar Usuario
+router.get('/user/:id', UserCtrl.getUser); //Buscar un Usuario
+router.put('/user/:id', UserCtrl.editUser); //Editar Usuario
+router.delete('/user/:id', UserCtrl.deleteUser); //Eliminar Usuario
 
-router.put('/user/:id/pass', UserCtrl.editPass);//Editar constraseña
+router.put('/user/:id/pass', UserCtrl.editPass); //Editar constraseña
 
-router.put('/user/:id/img', UserCtrl.addImg);//Agregar Imagen del Usuario
+router.put('/user/:id/img', UserCtrl.addImg); //Agregar Imagen del Usuario
 
-router.put('/user/:id/cm', UserCtrl.addCM);//Agregar Usuario a un CM
-router.put('/user/:id/area', UserCtrl.addArea);//Agregar Areas al Usuario
+router.put('/user/:id/cm', UserCtrl.addCM); //Agregar Usuario a un CM
+router.put('/user/:id/area', UserCtrl.addArea); //Agregar Areas al Usuario
 
-router.put('/user/:id/cm/:cm', UserCtrl.deleteCM);//Eliminar usuario del CM
-router.put('/user/:id/area/:area', UserCtrl.deleteArea);//Eliminar Area del Usuario
+router.put('/user/:id/cm/:cm', UserCtrl.deleteCM); //Eliminar usuario del CM
+router.put('/user/:id/area/:area', UserCtrl.deleteArea); //Eliminar Area del Usuario
 
 module.exports = router;
